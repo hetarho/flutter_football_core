@@ -3,15 +3,21 @@ import 'package:flutter_football_core/data/data-sources/local_data_source.dart';
 import 'package:flutter_football_core/data/local-storage/hive/hive_adapters.dart';
 import 'package:flutter_football_core/data/local-storage/hive/hive_local_storage.dart';
 import 'package:flutter_football_core/data/repositories/game_slot.repository.dart';
+import 'package:flutter_football_core/di.dart';
 import 'package:flutter_football_core/entities/game-slot/game_slot.dart';
 import 'package:flutter_football_core/use-cases/create_game_slot.uc.dart';
 import 'package:flutter_football_core/use-cases/delete_game_slot.uc.dart';
 import 'package:flutter_football_core/use-cases/get_all_game_slot.uc.dart';
 import 'package:flutter_football_core/use-cases/interfaces/game_slot.repository.interface.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 
 void main() async {
   await Hive.initFlutter();
+
+  // 의존성 주입 설정
+  setupLocator();
+  await GetIt.I.allReady();
 
   // 모델 어댑터 등록
   Hive.registerAdapter(GameSlotModelAdapter());
@@ -50,24 +56,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late HiveLocalStorage hiveLocalStorage;
-  late LocalDataSource localDataSource;
-  late GameSlotRepository gameSlotRepository;
-  late GetAllGameSlotUsecase getAllGameSlotUsecase;
-  late CreateGameSlotUsecase createGameSlotUsecase;
-  late DeleteGameSlotUsecase deleteGameSlotUsecase;
+  late GetAllGameSlotUsecase getAllGameSlotUsecase = GetIt.I.get<GetAllGameSlotUsecase>();
+  late CreateGameSlotUsecase createGameSlotUsecase = GetIt.I.get<CreateGameSlotUsecase>();
+  late DeleteGameSlotUsecase deleteGameSlotUsecase = GetIt.I.get<DeleteGameSlotUsecase>();
   List<GameSlot> gameSlots = [];
 
   @override
   void initState() {
     super.initState();
 
-    hiveLocalStorage = HiveLocalStorage();
-    localDataSource = LocalDataSource(localStorage: hiveLocalStorage);
-    gameSlotRepository = GameSlotRepositoryImpl(dataSource: localDataSource);
-    getAllGameSlotUsecase = GetAllGameSlotUsecase(gameSlotRepository: gameSlotRepository);
-    createGameSlotUsecase = CreateGameSlotUsecase(gameSlotRepository: gameSlotRepository);
-    deleteGameSlotUsecase = DeleteGameSlotUsecase(gameSlotRepository: gameSlotRepository);
     _getAllGameSlot();
   }
 

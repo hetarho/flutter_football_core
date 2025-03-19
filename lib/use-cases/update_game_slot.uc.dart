@@ -1,15 +1,16 @@
 import 'package:flutter_football_core/entities/game-slot/game_slot.dart';
 import 'package:flutter_football_core/use-cases/interfaces/game_slot.repository.interface.dart';
 import 'package:flutter_football_core/use-cases/_usecase.dart';
+import 'package:get_it/get_it.dart';
 
 class UpdateGameSlotUsecase extends Usecase<void, UpdateGameSlotParams> {
-  final GameSlotRepository gameSlotRepository;
+  final GameSlotRepository _gameSlotRepository;
 
-  UpdateGameSlotUsecase({required this.gameSlotRepository});
+  UpdateGameSlotUsecase() : _gameSlotRepository = GetIt.I.get<GameSlotRepository>();
 
   @override
   Future<void> execute(UpdateGameSlotParams params) async {
-    await gameSlotRepository.updateGameSlot(params.gameSlot);
+    await _gameSlotRepository.updateGameSlot(params.gameSlot);
   }
 }
 

@@ -1,14 +1,14 @@
 import 'package:flutter_football_core/use-cases/_usecase.dart';
 import 'package:flutter_football_core/use-cases/interfaces/game_slot.repository.interface.dart';
-
+import 'package:get_it/get_it.dart';
 class DeleteGameSlotUsecase extends Usecase<void, DeleteGameSlotParams> {
-  final GameSlotRepository gameSlotRepository;
+  final GameSlotRepository _gameSlotRepository;
 
-  DeleteGameSlotUsecase({required this.gameSlotRepository});
+  DeleteGameSlotUsecase() : _gameSlotRepository = GetIt.I.get<GameSlotRepository>();
 
   @override
   Future<void> execute(DeleteGameSlotParams params) async {
-    await gameSlotRepository.deleteGameSlot(params.id);
+    await _gameSlotRepository.deleteGameSlot(params.id);
   }
 }
 

@@ -4,32 +4,32 @@ import 'package:flutter_football_core/use-cases/create_game_slot.uc.dart';
 import 'package:flutter_football_core/use-cases/interfaces/game_slot.repository.interface.dart';
 
 class GameSlotRepositoryImpl implements GameSlotRepository {
-  final DataSource dataSource;
+  final DataSource _dataSource;
 
-  GameSlotRepositoryImpl({required this.dataSource});
+  GameSlotRepositoryImpl(DataSource dataSource) : _dataSource = dataSource;
 
   @override
   Future<int> createGameSlot(CreateGameSlotParams params) async {
-    return dataSource.createGameSlot(params);
+    return _dataSource.createGameSlot(params);
   }
 
   @override
   Future<void> deleteGameSlot(int id) async {
-    return dataSource.deleteGameSlot(id);
+    return _dataSource.deleteGameSlot(id);
   }
 
   @override
   Future<List<GameSlot>> getAllGameSlots() async {
-    return dataSource.getAllGameSlots();
+    return _dataSource.getAllGameSlots();
   }
 
   @override
   Future<GameSlot> getGameSlot(int id) async {
-    return dataSource.getGameSlot(id);
+    return _dataSource.getGameSlot(id);
   }
 
   @override
   Future<void> updateGameSlot(GameSlot gameSlot) async {
-    return dataSource.updateGameSlot(gameSlot);
+    return _dataSource.updateGameSlot(gameSlot);
   }
 }
