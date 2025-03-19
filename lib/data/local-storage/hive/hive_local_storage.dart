@@ -10,16 +10,15 @@ class HiveLocalStorage implements LocalStorage {
     return Hive.box<int>('${key}_last_id');
   }
 
-  int _getLastId(String key) {
+  @override
+  Future<int> getNextId(String key) async {
     final lastIdBox = _getLastIdBox(key);
-    final lastId = lastIdBox.get('last_id', defaultValue: 0);
-    return lastId ?? 0;
+    final int lastId = lastIdBox.get('last_id', defaultValue: 0) ?? 0;
+    return lastId + 1;
   }
 
   @override
-  Future<int> create<T>({required String key, required T value}) async {
-    final lastId = _getLastId(key);
-    final id = lastId + 1;
+  Future<int> create<T>({required String key, required int id, required T value}) async {
     _getBox(key).put(id, value);
     _getLastIdBox(key).put('last_id', id);
     return id;

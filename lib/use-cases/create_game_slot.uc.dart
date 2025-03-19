@@ -7,7 +7,7 @@ class CreateGameSlotUsecase extends Usecase<int, CreateGameSlotParams> {
 
   @override
   Future<int> execute(CreateGameSlotParams params) async {
-    return gameSlotRepository.createGameSlot(params);
+    return await gameSlotRepository.createGameSlot(params);
   }
 }
 
