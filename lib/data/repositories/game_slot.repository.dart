@@ -9,8 +9,8 @@ class GameSlotRepositoryImpl implements GameSlotRepository {
   GameSlotRepositoryImpl(DataSource dataSource) : _dataSource = dataSource;
 
   @override
-  Future<int> createGameSlot(CreateGameSlotParams params) async {
-    return _dataSource.createGameSlot(params);
+  Future<int> createGameSlot({required String saveName}) async {
+    return _dataSource.createGameSlot(saveName: saveName);
   }
 
   @override
@@ -29,7 +29,7 @@ class GameSlotRepositoryImpl implements GameSlotRepository {
   }
 
   @override
-  Future<void> updateGameSlot(GameSlot gameSlot) async {
-    return _dataSource.updateGameSlot(gameSlot);
+  Future<void> updateGameSlot({required int id, String? saveName}) async {
+    return _dataSource.updateGameSlot(id: id, saveName: saveName);
   }
 }

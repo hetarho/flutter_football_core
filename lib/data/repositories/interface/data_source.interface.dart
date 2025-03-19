@@ -1,10 +1,12 @@
 import 'package:flutter_football_core/entities/game-slot/game_slot.dart';
-import 'package:flutter_football_core/use-cases/create_game_slot.uc.dart';
 
 abstract class DataSource {
-  Future<int> createGameSlot(CreateGameSlotParams params);
+  Future<int> createGameSlot({required String saveName});
   Future<GameSlot> getGameSlot(int id);
   Future<List<GameSlot>> getAllGameSlots();
-  Future<void> updateGameSlot(GameSlot gameSlot);
+  Future<void> updateGameSlot({
+    required int id,
+    String? saveName,
+  });
   Future<void> deleteGameSlot(int id);
 }

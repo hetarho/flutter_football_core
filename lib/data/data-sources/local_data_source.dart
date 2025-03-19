@@ -3,7 +3,6 @@ import 'package:flutter_football_core/data/data-sources/interfaces/local_storage
 import 'package:flutter_football_core/data/model/game_slot.model.dart';
 import 'package:flutter_football_core/data/repositories/interface/data_source.interface.dart';
 import 'package:flutter_football_core/entities/game-slot/game_slot.dart';
-import 'package:flutter_football_core/use-cases/create_game_slot.uc.dart';
 import 'package:get_it/get_it.dart';
 
 class LocalDataSource implements DataSource {
@@ -14,11 +13,11 @@ class LocalDataSource implements DataSource {
   LocalDataSource() : _localStorage = GetIt.I.get<LocalStorage>();
 
   @override
-  Future<int> createGameSlot(CreateGameSlotParams params) async {
+  Future<int> createGameSlot({required String saveName}) async {
     final id = await _localStorage.getNextId('game_slot');
     final gameSlotModel = GameSlotModel(
       id: id,
-      saveName: params.saveName,
+      saveName: saveName,
       createAt: DateTime.now(),
       updateAt: DateTime.now(),
     );
@@ -46,9 +45,12 @@ class LocalDataSource implements DataSource {
   }
 
   @override
-  Future<void> updateGameSlot(GameSlot gameSlot) async {
-    // 엔티티를 모델로 변환
-    final model = _gameSlotAdapter.toModel(gameSlot);
-    await _localStorage.update(key: 'game_slot', id: gameSlot.id, value: model);
+  Future<void> updateGameSlot({
+    required int id,
+    String? saveName,
+  }) async {
+    final gameSlotModel = await _localStorage.read<GameSlotModel>(key: 'game_slot', id: id);
+    final updatedGameSlotModel = gameSlotModel.copyWith(saveName: saveName, updateAt: DateTime.now());
+    await _localStorage.update(key: 'game_slot', id: id, value: updatedGameSlotModel);
   }
 }
