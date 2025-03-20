@@ -11,16 +11,8 @@ class GameSlot {
     required this.updateAt,
   });
 
-  GameSlot copyWith({
-    String? saveName,
-    DateTime? createAt,
-    DateTime? updateAt,
-  }) {
-    return GameSlot(
-      id: id,
-      saveName: saveName ?? this.saveName,
-      createAt: createAt ?? this.createAt,
-      updateAt: updateAt ?? this.updateAt,
-    );
+  @override
+  String toString() {
+    return 'GameSlot(id: $id, saveName: $saveName, createAt: $createAt, updateAt: $updateAt)';
   }
 }
