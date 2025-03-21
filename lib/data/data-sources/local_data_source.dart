@@ -1,3 +1,4 @@
+import 'package:flutter_football_core/adapters/club.adapter.dart';
 import 'package:flutter_football_core/adapters/game_slot.adapter.dart';
 import 'package:flutter_football_core/data/data-sources/interfaces/local_storage.interface.dart';
 import 'package:flutter_football_core/data/model/club.model.dart';
