@@ -5,7 +5,6 @@ import 'package:flutter_football_core/data/repositories/club.repository.dart';
 import 'package:flutter_football_core/data/repositories/game_slot.repository.dart';
 import 'package:flutter_football_core/data/repositories/interface/data_source.interface.dart';
 import 'package:flutter_football_core/use-cases/club/create_club.uc.dart';
-import 'package:flutter_football_core/use-cases/club/delete_club.uc.dart';
 import 'package:flutter_football_core/use-cases/club/get_all_club_by_game_slot_id.uc.dart';
 import 'package:flutter_football_core/use-cases/club/get_club.uc.dart';
 import 'package:flutter_football_core/use-cases/club/recode_fixture_result.uc.dart';
@@ -33,7 +32,6 @@ void setupLocator() {
   locator.registerLazySingleton<UpdateGameSlotUsecase>(() => UpdateGameSlotUsecase());
 
   locator.registerLazySingleton<CreateClubUsecase>(() => CreateClubUsecase());
-  locator.registerLazySingleton<DeleteClubUsecase>(() => DeleteClubUsecase());
   locator.registerLazySingleton<RecodeFixtureResultUsecase>(() => RecodeFixtureResultUsecase());
   locator.registerLazySingleton<GetClubUsecase>(() => GetClubUsecase());
   locator.registerLazySingleton<GetAllClubByGameSlotIdUsecase>(() => GetAllClubByGameSlotIdUsecase());
