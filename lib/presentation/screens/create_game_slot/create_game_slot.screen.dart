@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_football_core/presentation/screens/home/home.screen.dart';
-import 'package:flutter_football_core/use-cases/club/create_club.uc.dart';
 import 'package:flutter_football_core/use-cases/game_slot/create_game_slot.uc.dart';
 import 'package:gap/gap.dart';
 import 'package:get_it/get_it.dart';
@@ -13,13 +12,9 @@ class CreateGameSlotScreen extends StatelessWidget {
   final TextEditingController _nameController = TextEditingController();
 
   final CreateGameSlotUsecase _createGameSlotUsecase = GetIt.I.get<CreateGameSlotUsecase>();
-  final CreateClubUsecase _createClubUsecase = GetIt.I.get<CreateClubUsecase>();
 
   createGameSlot() async {
-    final gameSlotId = await _createGameSlotUsecase.execute(CreateGameSlotParams(saveName: _nameController.text));
-    await Future.forEach(List.generate(20, (i) => i), (index) async {
-      await _createClubUsecase.execute(CreateClubParams(name: '팀${index + 1}', gameSlotId: gameSlotId));
-    });
+    await _createGameSlotUsecase.execute(CreateGameSlotParams(saveName: _nameController.text));
   }
 
   @override

@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/ihaelam/dev/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/ihaelam/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/ihaelam/project/flutter_football_core/android/app/.cxx/Debug/583e1365/x86",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/ihaelam/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/ihaelam/project/flutter_football_core/android/app/.cxx/Debug/583e1365/x86",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}

@@ -59,14 +59,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _foldGameSlot(int id) async {
-    print(id);
     setState(() {
       isFolded[id] = !(isFolded[id] ?? false);
       selectedGameSlotId = id;
     });
 
     final clubs = await getAllClubByGameSlotIdUsecase.execute(GetAllClubByGameSlotIdParams(gameSlotId: id));
-    print(clubs);
     setState(() {
       this.clubs = clubs;
     });
@@ -79,52 +77,56 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Home'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Button(
-              onPressed: () {
-                context.push(CreateGameSlotScreen.routeName);
-              },
-              child: const Text('Create Game Slot'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                final box = Hive.box('club');
-                // box.clear();
-                print(box.values.toList());
-              },
-              child: Text('test'),
-            ),
-            const Gap(16),
-            ...gameSlots.map((gameSlot) => Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('${gameSlot.id} ${gameSlot.saveName}'),
-                        const Gap(16),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Button(
+                onPressed: () {
+                  context.push(CreateGameSlotScreen.routeName);
+                },
+                child: const Text('Create Game Slot'),
+              ),
+              const Gap(16),
+              ...gameSlots.map((gameSlot) => Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('${gameSlot.id} ${gameSlot.saveName}'),
+                          const Gap(16),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('create: ${gameSlot.createAt.toString().substring(0, 19)}'),
+                              Text('last play: ${gameSlot.updateAt.toString().substring(0, 19)}'),
+                            ],
+                          ),
+                          const Gap(16),
+                          DeleteButton(onPressed: () => _deleteGameSlot(gameSlot.id)),
+                          const Gap(16),
+                          FoldableButton(onPressed: () => _foldGameSlot(gameSlot.id), isFolded: isFolded[gameSlot.id] ?? false),
+                        ],
+                      ),
+                      const Gap(16),
+                      if ((isFolded[gameSlot.id] ?? false) && selectedGameSlotId == gameSlot.id) ...[
                         Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('create: ${gameSlot.createAt.toString().substring(0, 19)}'),
-                            Text('last play: ${gameSlot.updateAt.toString().substring(0, 19)}'),
-                          ],
+                          children: clubs
+                              .map((club) => Column(
+                                    children: [
+                                      Text(club.name),
+                                      Text(club.players.map((player) => player.name).join(', ')),
+                                      const SizedBox(height: 8),
+                                    ],
+                                  ))
+                              .toList(),
                         ),
-                        const Gap(16),
-                        DeleteButton(onPressed: () => _deleteGameSlot(gameSlot.id)),
-                        const Gap(16),
-                        FoldableButton(onPressed: () => _foldGameSlot(gameSlot.id), isFolded: isFolded[gameSlot.id] ?? false),
-                      ],
-                    ),
-                    const Gap(16),
-                    if ((isFolded[gameSlot.id] ?? false) && selectedGameSlotId == gameSlot.id) ...[
-                      ...clubs.map((club) => Text(club.name)),
+                      ]
                     ],
-                  ],
-                )),
-          ],
+                  )),
+            ],
+          ),
         ),
       ),
     );

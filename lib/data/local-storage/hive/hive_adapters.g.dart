@@ -103,3 +103,106 @@ class ClubModelAdapter extends TypeAdapter<ClubModel> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+class PlayerModelAdapter extends TypeAdapter<PlayerModel> {
+  @override
+  final int typeId = 2;
+
+  @override
+  PlayerModel read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PlayerModel(
+      id: (fields[0] as num).toInt(),
+      name: fields[1] as String,
+      position: fields[3] as HivePosition,
+      age: (fields[4] as num).toInt(),
+      stat: (fields[6] as num).toInt(),
+      clubId: (fields[8] as num?)?.toInt(),
+      gameSlotId: (fields[2] as num).toInt(),
+      backNumber: (fields[5] as num?)?.toInt(),
+      isStarting: fields[7] as bool?,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, PlayerModel obj) {
+    writer
+      ..writeByte(9)
+      ..writeByte(0)
+      ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.name)
+      ..writeByte(2)
+      ..write(obj.gameSlotId)
+      ..writeByte(3)
+      ..write(obj.position)
+      ..writeByte(4)
+      ..write(obj.age)
+      ..writeByte(5)
+      ..write(obj.backNumber)
+      ..writeByte(6)
+      ..write(obj.stat)
+      ..writeByte(7)
+      ..write(obj.isStarting)
+      ..writeByte(8)
+      ..write(obj.clubId);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PlayerModelAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class HivePositionAdapter extends TypeAdapter<HivePosition> {
+  @override
+  final int typeId = 3;
+
+  @override
+  HivePosition read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 0:
+        return HivePosition.forward;
+      case 1:
+        return HivePosition.midfield;
+      case 2:
+        return HivePosition.defense;
+      case 3:
+        return HivePosition.goalie;
+      default:
+        return HivePosition.forward;
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, HivePosition obj) {
+    switch (obj) {
+      case HivePosition.forward:
+        writer.writeByte(0);
+      case HivePosition.midfield:
+        writer.writeByte(1);
+      case HivePosition.defense:
+        writer.writeByte(2);
+      case HivePosition.goalie:
+        writer.writeByte(3);
+    }
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is HivePositionAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}

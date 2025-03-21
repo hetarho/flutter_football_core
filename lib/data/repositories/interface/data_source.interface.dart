@@ -1,5 +1,6 @@
 import 'package:flutter_football_core/entities/club/club.dart';
 import 'package:flutter_football_core/entities/game-slot/game_slot.dart';
+import 'package:flutter_football_core/entities/player/player.dart';
 
 abstract class DataSource {
   Future<int> createGameSlot({required String saveName});
@@ -26,4 +27,9 @@ abstract class DataSource {
   Future<void> deleteClub(int id);
   Future<void> deleteClubByGameSlotId(int gameSlotId);
   Future<List<Club>> getAllClubsByGameSlotId(int gameSlotId);
+
+  Future<int> createPlayer(
+      {required String name, required Position position, required int age, required int stat, required int clubId, required int gameSlotId});
+  Future<List<Player>> getAllPlayersByClubId(int clubId);
+  Future<void> deletePlayerByGameSlotId(int gameSlotId);
 }

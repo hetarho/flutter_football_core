@@ -1,7 +1,12 @@
+import 'package:flutter_football_core/entities/player/player.dart';
+
 class Club {
   final int id;
   final String name;
   final int gameSlotId;
+
+  List<Player> players = [];
+  List<Player> get startingPlayers => players.where((player) => player.isStarting ?? false).toList();
 
   int win;
   int draw;
@@ -12,7 +17,15 @@ class Club {
   int goalAgainst;
   int get goalDifference => goal - goalAgainst;
 
-  Club({required this.id, required this.name, required this.gameSlotId, required this.win, required this.draw, required this.lose, required this.goal, required this.goalAgainst});
+  Club(
+      {required this.id,
+      required this.name,
+      required this.gameSlotId,
+      required this.win,
+      required this.draw,
+      required this.lose,
+      required this.goal,
+      required this.goalAgainst});
 
   @override
   String toString() {

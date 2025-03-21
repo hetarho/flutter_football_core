@@ -1,0 +1,1 @@
+/Users/ihaelam/project/flutter_football_core/build/app/intermediates/cxx/Debug/583e1365/obj/armeabi-v7a

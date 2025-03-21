@@ -20,6 +20,8 @@ void main() async {
   await Hive.openBox<int>('game_slot_last_id');
   await Hive.openBox('club');
   await Hive.openBox<int>('club_last_id');
+  await Hive.openBox('player');
+  await Hive.openBox<int>('player_last_id');
 
   runApp(const MyApp());
 }

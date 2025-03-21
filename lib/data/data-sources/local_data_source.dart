@@ -1,11 +1,14 @@
 import 'package:flutter_football_core/adapters/club.adapter.dart';
 import 'package:flutter_football_core/adapters/game_slot.adapter.dart';
+import 'package:flutter_football_core/adapters/player.dart';
 import 'package:flutter_football_core/data/data-sources/interfaces/local_storage.interface.dart';
 import 'package:flutter_football_core/data/model/club.model.dart';
 import 'package:flutter_football_core/data/model/game_slot.model.dart';
+import 'package:flutter_football_core/data/model/player.model.dart';
 import 'package:flutter_football_core/data/repositories/interface/data_source.interface.dart';
 import 'package:flutter_football_core/entities/club/club.dart';
 import 'package:flutter_football_core/entities/game-slot/game_slot.dart';
+import 'package:flutter_football_core/entities/player/player.dart';
 import 'package:get_it/get_it.dart';
 
 class LocalDataSource implements DataSource {
@@ -13,6 +16,7 @@ class LocalDataSource implements DataSource {
   late final LocalStorage _localStorage;
   final GameSlotAdapter _gameSlotAdapter = GameSlotAdapter();
   final ClubAdapter _clubAdapter = ClubAdapter();
+  final PlayerAdapter _playerAdapter = PlayerAdapter();
   LocalDataSource() : _localStorage = GetIt.I.get<LocalStorage>();
 
   @override
@@ -109,6 +113,39 @@ class LocalDataSource implements DataSource {
     for (final model in models) {
       if (model.gameSlotId == gameSlotId) {
         await _localStorage.delete(key: 'club', id: model.id);
+      }
+    }
+  }
+
+  @override
+  Future<int> createPlayer(
+      {required String name, required Position position, required int age, required int stat, required int clubId, required int gameSlotId}) async {
+    final id = await _localStorage.getNextId('player');
+    final player = Player(
+      id: id,
+      name: name,
+      position: position,
+      age: age,
+      stat: stat,
+      clubId: clubId,
+      gameSlotId: gameSlotId,
+    );
+    await _localStorage.create<PlayerModel>(key: 'player', id: id, value: _playerAdapter.toModel(player));
+    return id;
+  }
+
+  @override
+  Future<List<Player>> getAllPlayersByClubId(int clubId) async {
+    final List<PlayerModel> models = await _localStorage.readAll(key: 'player');
+    return models.where((model) => model.clubId == clubId).map((model) => _playerAdapter.toEntity(model)).toList();
+  }
+
+  @override
+  Future<void> deletePlayerByGameSlotId(int gameSlotId) async {
+    final List<PlayerModel> models = await _localStorage.readAll(key: 'player');
+    for (final model in models) {
+      if (model.gameSlotId == gameSlotId) {
+        await _localStorage.delete(key: 'player', id: model.id);
       }
     }
   }
