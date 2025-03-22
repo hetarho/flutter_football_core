@@ -7,6 +7,7 @@ class Club {
 
   List<Player> players = [];
   List<Player> get startingPlayers => players.where((player) => player.isStarting ?? false).toList();
+  int get stat => players.fold(0, (sum, player) => sum + player.stat);
 
   int win;
   int draw;

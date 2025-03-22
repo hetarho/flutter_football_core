@@ -115,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: clubs
                               .map((club) => Column(
                                     children: [
-                                      Text(club.name),
+                                      Text('${club.name} ${club.stat}'),
                                       Text(club.players.map((player) => player.name).join(', ')),
                                       const SizedBox(height: 8),
                                     ],
