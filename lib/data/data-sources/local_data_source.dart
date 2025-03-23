@@ -3,17 +3,20 @@ import 'package:flutter_football_core/adapters/country.adapter.dart';
 import 'package:flutter_football_core/adapters/game_slot.adapter.dart';
 import 'package:flutter_football_core/adapters/league.adapter.dart';
 import 'package:flutter_football_core/adapters/player.adapter.dart';
+import 'package:flutter_football_core/adapters/season.adapter.dart';
 import 'package:flutter_football_core/data/data-sources/interfaces/local_storage.interface.dart';
 import 'package:flutter_football_core/data/model/club.model.dart';
 import 'package:flutter_football_core/data/model/game_slot.model.dart';
 import 'package:flutter_football_core/data/model/league.model.dart';
 import 'package:flutter_football_core/data/model/player.model.dart';
+import 'package:flutter_football_core/data/model/season.model.dart';
 import 'package:flutter_football_core/data/repositories/interface/data_source.interface.dart';
 import 'package:flutter_football_core/entities/club/club.dart';
 import 'package:flutter_football_core/entities/country.enum.dart';
 import 'package:flutter_football_core/entities/game-slot/game_slot.dart';
 import 'package:flutter_football_core/entities/league/league.dart';
 import 'package:flutter_football_core/entities/player/player.dart';
+import 'package:flutter_football_core/entities/season/season.dart';
 import 'package:get_it/get_it.dart';
 
 class LocalDataSource implements DataSource {
@@ -23,7 +26,7 @@ class LocalDataSource implements DataSource {
   final ClubAdapter _clubAdapter = ClubAdapter();
   final PlayerAdapter _playerAdapter = PlayerAdapter();
   final LeagueAdapter _leagueAdapter = LeagueAdapter();
-
+  final SeasonAdapter _seasonAdapter = SeasonAdapter();
   LocalDataSource() : _localStorage = GetIt.I.get<LocalStorage>();
 
   @override
@@ -195,6 +198,20 @@ class LocalDataSource implements DataSource {
       if (model.gameSlotId == gameSlotId) {
         await _localStorage.delete(key: LeagueModel.boxName, id: model.id);
       }
-    } 
+    }
+  }
+
+  @override
+  Future<int> createSeason({required int leagueId, required int gameSlotId, required DateTime startDate, required DateTime endDate}) async {
+    final id = await _localStorage.getNextId(SeasonModel.boxName);
+    final season = Season(id: id, leagueId: leagueId, gameSlotId: gameSlotId, startDate: startDate, endDate: endDate);
+    await _localStorage.create<SeasonModel>(key: SeasonModel.boxName, id: id, value: _seasonAdapter.toModel(season));
+    return id;
+  }
+
+  @override
+  Future<List<Season>> getAllSeasonsByLeagueId(int leagueId) async {
+    final List<SeasonModel> models = await _localStorage.readAll(key: SeasonModel.boxName);
+    return models.where((model) => model.leagueId == leagueId).map((model) => _seasonAdapter.toEntity(model)).toList();
   }
 }

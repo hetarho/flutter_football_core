@@ -1,12 +1,14 @@
 import 'package:flutter_football_core/entities/player/player.dart';
+import 'package:flutter_football_core/use-cases/_usecase.dart';
 import 'package:flutter_football_core/use-cases/interfaces/player.repository.interface.dart';
 import 'package:get_it/get_it.dart';
 
-class CreatePlayerUsecase {
+class CreatePlayerUsecase extends Usecase<int, CreatePlayerParams> {
   final PlayerRepository _playerRepository;
 
   CreatePlayerUsecase() : _playerRepository = GetIt.I.get<PlayerRepository>();
 
+  @override
   Future<int> execute(CreatePlayerParams params) async {
     return await _playerRepository.createPlayer(
       name: params.name,

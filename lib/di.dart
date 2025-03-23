@@ -6,6 +6,7 @@ import 'package:flutter_football_core/data/repositories/game_slot.repository.dar
 import 'package:flutter_football_core/data/repositories/interface/data_source.interface.dart';
 import 'package:flutter_football_core/data/repositories/league.repository.dart';
 import 'package:flutter_football_core/data/repositories/player.repository.dart';
+import 'package:flutter_football_core/data/repositories/season.repository.dart';
 import 'package:flutter_football_core/use-cases/club/create_club.uc.dart';
 import 'package:flutter_football_core/use-cases/club/get_all_club_by_game_slot_id.uc.dart';
 import 'package:flutter_football_core/use-cases/club/get_club.uc.dart';
@@ -20,10 +21,13 @@ import 'package:flutter_football_core/use-cases/game_slot/get_game_slot.uc.dart'
 import 'package:flutter_football_core/use-cases/game_slot/update_game_slot.uc.dart';
 import 'package:flutter_football_core/use-cases/interfaces/league.repository.interface.dart';
 import 'package:flutter_football_core/use-cases/interfaces/player.repository.interface.dart';
+import 'package:flutter_football_core/use-cases/interfaces/season.repository.interface.dart';
 import 'package:flutter_football_core/use-cases/league/create_league.uc.dart';
 import 'package:flutter_football_core/use-cases/league/get_all_league_by_game_slot_id.dart';
 import 'package:flutter_football_core/use-cases/player/create_player.uc.dart';
 import 'package:flutter_football_core/use-cases/player/get_all_player_by_club_id.dart';
+import 'package:flutter_football_core/use-cases/season/create_season.uc.dart';
+import 'package:flutter_football_core/use-cases/season/get_all_season_by_leagud_id.uc.dart';
 import 'package:get_it/get_it.dart';
 
 final locator = GetIt.instance;
@@ -35,7 +39,7 @@ void setupLocator() {
   locator.registerLazySingleton<ClubRepository>(() => ClubRepositoryImpl(locator<DataSource>(instanceName: LocalDataSource.instanceName)));
   locator.registerLazySingleton<PlayerRepository>(() => PlayerRepositoryImpl(locator<DataSource>(instanceName: LocalDataSource.instanceName)));
   locator.registerLazySingleton<LeagueRepository>(() => LeagueRepositoryImpl(locator<DataSource>(instanceName: LocalDataSource.instanceName)));
-
+  locator.registerLazySingleton<SeasonRepository>(() => SeasonRepositoryImpl(locator<DataSource>(instanceName: LocalDataSource.instanceName)));
   locator.registerLazySingleton<GetAllGameSlotUsecase>(() => GetAllGameSlotUsecase());
   locator.registerLazySingleton<CreateGameSlotUsecase>(() => CreateGameSlotUsecase());
   locator.registerLazySingleton<DeleteGameSlotUsecase>(() => DeleteGameSlotUsecase());
@@ -53,4 +57,7 @@ void setupLocator() {
 
   locator.registerLazySingleton<CreateLeagueUsecase>(() => CreateLeagueUsecase());
   locator.registerLazySingleton<GetAllLeagueByGameSlotIdUsecase>(() => GetAllLeagueByGameSlotIdUsecase());
+
+  locator.registerLazySingleton<CreateSeasonUsecase>(() => CreateSeasonUsecase());
+  locator.registerLazySingleton<GetAllSeasonByLeagueIdUsecase>(() => GetAllSeasonByLeagueIdUsecase());
 }

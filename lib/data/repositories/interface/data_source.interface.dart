@@ -3,6 +3,7 @@ import 'package:flutter_football_core/entities/country.enum.dart';
 import 'package:flutter_football_core/entities/game-slot/game_slot.dart';
 import 'package:flutter_football_core/entities/league/league.dart';
 import 'package:flutter_football_core/entities/player/player.dart';
+import 'package:flutter_football_core/entities/season/season.dart';
 
 abstract class DataSource {
   Future<int> createGameSlot({required String saveName});
@@ -41,4 +42,7 @@ abstract class DataSource {
   Future<List<League>> getAllLeaguesByGameSlotId(int gameSlotId);
   Future<void> deleteLeague(int id);
   Future<void> deleteLeagueByGameSlotId(int gameSlotId);
+
+  Future<int> createSeason({required int leagueId, required int gameSlotId, required DateTime startDate, required DateTime endDate});
+  Future<List<Season>> getAllSeasonsByLeagueId(int leagueId);
 }
