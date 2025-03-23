@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_football_core/data/local-storage/hive/hive_open_boxes.g.dart';
+import 'package:flutter_football_core/data/local-storage/hive/hive_open_boxes.dart';
 import 'package:flutter_football_core/data/local-storage/hive/hive_registrar.g.dart';
 import 'package:flutter_football_core/di.dart';
 import 'package:flutter_football_core/route.dart';
