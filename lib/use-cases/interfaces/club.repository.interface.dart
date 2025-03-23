@@ -3,7 +3,7 @@ import 'package:flutter_football_core/entities/club/club.dart';
 /// GameSlotRepository is a repository that manages game slots
 abstract class ClubRepository {
   /// Create a new game slot
-  Future<int> createClub({required String name, required int gameSlotId});
+  Future<int> createClub({required String name, required int gameSlotId, required int leagueId});
 
   /// Get a game slot by id
   Future<Club> getClub(int id);
@@ -13,6 +13,9 @@ abstract class ClubRepository {
 
   /// Get all clubs by game slot id
   Future<List<Club>> getAllClubsByGameSlotId(int gameSlotId);
+
+  /// Get all clubs by league id
+  Future<List<Club>> getAllClubsByLeagueId(int leagueId);
 
   /// Update a club
   Future<void> updateClub({

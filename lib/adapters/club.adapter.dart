@@ -14,6 +14,7 @@ class ClubAdapter implements EntityModelAdapter<Club, ClubModel> {
       lose: model.lose,
       goal: model.goal,
       goalAgainst: model.goalAgainst,
+      leagueId: model.leagueId,
     );
   }
 
@@ -28,6 +29,7 @@ class ClubAdapter implements EntityModelAdapter<Club, ClubModel> {
       lose: entity.lose,
       goal: entity.goal,
       goalAgainst: entity.goalAgainst,
+      leagueId: entity.leagueId,
     );
   }
 }

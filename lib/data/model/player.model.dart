@@ -13,6 +13,9 @@ enum HivePosition {
 }
 
 class PlayerModel extends HiveObject {
+  static const String boxName = 'player';
+  static const String lastIdBoxName = 'player_last_id';
+
   final int id;
   final String name;
   final int gameSlotId;

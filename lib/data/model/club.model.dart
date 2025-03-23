@@ -1,7 +1,9 @@
-import 'package:flutter_football_core/entities/club/club.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 
 class ClubModel extends HiveObject {
+  static const String boxName = 'club';
+  static const String lastIdBoxName = 'club_last_id';
+
   late final int id;
   late final String name;
   late final int gameSlotId;
@@ -10,22 +12,12 @@ class ClubModel extends HiveObject {
   late final int lose;
   late final int goal;
   late final int goalAgainst;
-
-  ClubModel.fromClub(Club club) {
-    id = club.id;
-    name = club.name;
-    gameSlotId = club.gameSlotId;
-    win = club.win;
-    draw = club.draw;
-    lose = club.lose;
-    goal = club.goal;
-    goalAgainst = club.goalAgainst;
-  }
-
+  late final int leagueId;
   ClubModel({
     required this.id,
     required this.name,
     required this.gameSlotId,
+    required this.leagueId,
     required this.win,
     required this.draw,
     required this.lose,
@@ -33,11 +25,12 @@ class ClubModel extends HiveObject {
     required this.goalAgainst,
   });
 
-  ClubModel copyWith({String? name, int? win, int? draw, int? lose, int? goal, int? goalAgainst}) {
+  ClubModel copyWith({String? name, int? win, int? draw, int? lose, int? goal, int? goalAgainst, int? leagueId}) {
     return ClubModel(
       id: id,
       name: name ?? this.name,
       gameSlotId: gameSlotId,
+      leagueId: leagueId ?? this.leagueId,
       win: win ?? this.win,
       draw: draw ?? this.draw,
       lose: lose ?? this.lose,

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_football_core/data/local-storage/hive/hive_registrar.g.dart';
+import 'package:flutter_football_core/data/model/club.model.dart';
+import 'package:flutter_football_core/data/model/game_slot.model.dart';
+import 'package:flutter_football_core/data/model/league.model.dart';
+import 'package:flutter_football_core/data/model/player.model.dart';
 import 'package:flutter_football_core/di.dart';
 import 'package:flutter_football_core/route.dart';
 import 'package:get_it/get_it.dart';
@@ -16,12 +20,14 @@ void main() async {
   Hive.registerAdapters();
 
   // 필요한 Hive 박스 열기
-  await Hive.openBox('game_slot');
-  await Hive.openBox<int>('game_slot_last_id');
-  await Hive.openBox('club');
-  await Hive.openBox<int>('club_last_id');
-  await Hive.openBox('player');
-  await Hive.openBox<int>('player_last_id');
+  await Hive.openBox(GameSlotModel.boxName);
+  await Hive.openBox<int>(GameSlotModel.lastIdBoxName);
+  await Hive.openBox(ClubModel.boxName);
+  await Hive.openBox<int>(ClubModel.lastIdBoxName);
+  await Hive.openBox(PlayerModel.boxName);
+  await Hive.openBox<int>(PlayerModel.lastIdBoxName);
+  await Hive.openBox(LeagueModel.boxName);
+  await Hive.openBox<int>(LeagueModel.lastIdBoxName);
 
   runApp(const MyApp());
 }

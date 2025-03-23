@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_football_core/data/model/club.model.dart';
+import 'package:flutter_football_core/data/model/game_slot.model.dart';
+import 'package:flutter_football_core/data/model/league.model.dart';
 import 'package:flutter_football_core/entities/club/club.dart';
 import 'package:flutter_football_core/entities/game-slot/game_slot.dart';
+import 'package:flutter_football_core/entities/league/league.dart';
 import 'package:flutter_football_core/presentation/components/button.dart';
 import 'package:flutter_football_core/presentation/components/delete_button.dart';
 import 'package:flutter_football_core/presentation/components/foldable_button.dart';
 import 'package:flutter_football_core/presentation/screens/create_game_slot/create_game_slot.screen.dart';
 import 'package:flutter_football_core/use-cases/club/get_all_club_by_game_slot_id.uc.dart';
+import 'package:flutter_football_core/use-cases/club/get_club_by_league_id.dart';
 import 'package:flutter_football_core/use-cases/game_slot/create_game_slot.uc.dart';
 import 'package:flutter_football_core/use-cases/game_slot/delete_game_slot.uc.dart';
 import 'package:flutter_football_core/use-cases/game_slot/get_all_game_slot.uc.dart';
 import 'package:flutter_football_core/use-cases/game_slot/get_game_slot.uc.dart';
 import 'package:flutter_football_core/use-cases/game_slot/update_game_slot.uc.dart';
+import 'package:flutter_football_core/use-cases/league/get_all_league_by_game_slot_id.dart';
 import 'package:gap/gap.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
@@ -32,9 +38,11 @@ class _HomeScreenState extends State<HomeScreen> {
   late DeleteGameSlotUsecase deleteGameSlotUsecase = GetIt.I.get<DeleteGameSlotUsecase>();
   late UpdateGameSlotUsecase updateGameSlotUsecase = GetIt.I.get<UpdateGameSlotUsecase>();
   late GetAllClubByGameSlotIdUsecase getAllClubByGameSlotIdUsecase = GetIt.I.get<GetAllClubByGameSlotIdUsecase>();
+  late GetAllLeagueByGameSlotIdUsecase getAllLeagueByGameSlotIdUsecase = GetIt.I.get<GetAllLeagueByGameSlotIdUsecase>();
   List<GameSlot> gameSlots = [];
   Map<int, bool> isFolded = {};
   List<Club> clubs = [];
+  List<League> leagues = [];
   int selectedGameSlotId = 0;
   @override
   void initState() {
@@ -65,8 +73,10 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     final clubs = await getAllClubByGameSlotIdUsecase.execute(GetAllClubByGameSlotIdParams(gameSlotId: id));
+    final leagues = await getAllLeagueByGameSlotIdUsecase.execute(GetAllLeagueByGameSlotIdParams(gameSlotId: id));
     setState(() {
       this.clubs = clubs;
+      this.leagues = leagues;
     });
   }
 
@@ -88,6 +98,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 child: const Text('Create Game Slot'),
               ),
+              // Button(
+              //   onPressed: () {
+              //     final lbox = Hive.box(LeagueModel.boxName);
+              //     final cbox = Hive.box(ClubModel.boxName);
+              //     final gbox = Hive.box(GameSlotModel.boxName);
+
+              //     print(lbox.values.length);
+              //     print(cbox.values.length);
+              //     print(gbox.values.length);
+              //   },
+              //   child: const Text('rwar'),
+              // ),
               const Gap(16),
               ...gameSlots.map((gameSlot) => Column(
                     children: [
@@ -112,15 +134,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       const Gap(16),
                       if ((isFolded[gameSlot.id] ?? false) && selectedGameSlotId == gameSlot.id) ...[
                         Column(
-                          children: clubs
-                              .map((club) => Column(
-                                    children: [
-                                      Text('${club.name} ${club.stat}'),
-                                      Text(club.players.map((player) => player.name).join(', ')),
-                                      const SizedBox(height: 8),
-                                    ],
-                                  ))
-                              .toList(),
+                          children: [
+                            LeagueContainer(gameSlotId: gameSlot.id),
+                          ],
                         ),
                       ]
                     ],
@@ -129,6 +145,112 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class LeagueContainer extends StatefulWidget {
+  final int gameSlotId;
+  const LeagueContainer({super.key, required this.gameSlotId});
+
+  @override
+  State<LeagueContainer> createState() => _LeagueContainerState();
+}
+
+class _LeagueContainerState extends State<LeagueContainer> {
+  late GetAllLeagueByGameSlotIdUsecase getAllLeagueByGameSlotIdUsecase = GetIt.I.get<GetAllLeagueByGameSlotIdUsecase>();
+  List<League> leagues = [];
+  bool folded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _getAllLeagueByGameSlotId();
+  }
+
+  Future<void> _getAllLeagueByGameSlotId() async {
+    final leagues = await getAllLeagueByGameSlotIdUsecase.execute(GetAllLeagueByGameSlotIdParams(gameSlotId: widget.gameSlotId));
+    setState(() {
+      this.leagues = leagues;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ...leagues.map((league) => LeagueCard(league: league)),
+      ],
+    );
+  }
+}
+
+class LeagueCard extends StatefulWidget {
+  final League league;
+  const LeagueCard({super.key, required this.league});
+
+  @override
+  State<LeagueCard> createState() => _LeagueCardState();
+}
+
+class _LeagueCardState extends State<LeagueCard> {
+  bool folded = false;
+  Future<void> _foldLeague(int id) async {
+    setState(() {
+      folded = !folded;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Text('${widget.league.name} ${widget.league.tier}'),
+            const Gap(16),
+            FoldableButton(onPressed: () => _foldLeague(widget.league.id), isFolded: folded),
+          ],
+        ),
+        const Gap(16),
+        if (folded) ...[
+          ClubCards(leagueId: widget.league.id),
+        ]
+      ],
+    );
+  }
+}
+
+class ClubCards extends StatefulWidget {
+  final int leagueId;
+  const ClubCards({super.key, required this.leagueId});
+
+  @override
+  State<ClubCards> createState() => _ClubCardsState();
+}
+
+class _ClubCardsState extends State<ClubCards> {
+  late GetClubByLeagueIdUsecase getClubByLeagueIdUsecase = GetIt.I.get<GetClubByLeagueIdUsecase>();
+  List<Club> clubs = [];
+  @override
+  void initState() {
+    super.initState();
+    _getAllClubByLeagueId();
+  }
+
+  Future<void> _getAllClubByLeagueId() async {
+    final clubs = await getClubByLeagueIdUsecase.execute(GetClubByLeagueIdParams(leagueId: widget.leagueId));
+    setState(() {
+      this.clubs = clubs;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(clubs.map((club) => club.name).join(', ')),
+      ],
     );
   }
 }

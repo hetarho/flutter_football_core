@@ -7,13 +7,14 @@ class CreateClubUsecase {
   CreateClubUsecase() : _clubRepository = GetIt.I.get<ClubRepository>();
 
   Future<int> execute(CreateClubParams params) async {
-    return await _clubRepository.createClub(name: params.name, gameSlotId: params.gameSlotId);
+    return await _clubRepository.createClub(name: params.name, gameSlotId: params.gameSlotId, leagueId: params.leagueId);
   }
 }
 
 class CreateClubParams {
   final String name;
   final int gameSlotId;
+  final int leagueId;
 
-  CreateClubParams({required this.name, required this.gameSlotId});
+  CreateClubParams({required this.name, required this.gameSlotId, required this.leagueId});
 }

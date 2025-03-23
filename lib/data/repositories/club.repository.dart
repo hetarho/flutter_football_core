@@ -8,8 +8,8 @@ class ClubRepositoryImpl implements ClubRepository {
   ClubRepositoryImpl(DataSource dataSource) : _dataSource = dataSource;
 
   @override
-  Future<int> createClub({required String name, required int gameSlotId}) async {
-    return await _dataSource.createClub(name: name, gameSlotId: gameSlotId);
+  Future<int> createClub({required String name, required int gameSlotId, required int leagueId}) async {
+    return await _dataSource.createClub(name: name, gameSlotId: gameSlotId, leagueId: leagueId);
   }
 
   @override
@@ -40,5 +40,10 @@ class ClubRepositoryImpl implements ClubRepository {
   @override
   Future<void> deleteClubByGameSlotId(int gameSlotId) async {
     return await _dataSource.deleteClubByGameSlotId(gameSlotId);
+  }
+
+  @override
+  Future<List<Club>> getAllClubsByLeagueId(int leagueId) async {
+    return await _dataSource.getAllClubsByLeagueId(leagueId);
   }
 }

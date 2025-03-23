@@ -4,6 +4,7 @@ class Club {
   final int id;
   final String name;
   final int gameSlotId;
+  final int leagueId;
 
   List<Player> players = [];
   List<Player> get startingPlayers => players.where((player) => player.isStarting ?? false).toList();
@@ -18,15 +19,17 @@ class Club {
   int goalAgainst;
   int get goalDifference => goal - goalAgainst;
 
-  Club(
-      {required this.id,
-      required this.name,
-      required this.gameSlotId,
-      required this.win,
-      required this.draw,
-      required this.lose,
-      required this.goal,
-      required this.goalAgainst});
+  Club({
+    required this.id,
+    required this.name,
+    required this.gameSlotId,
+    required this.win,
+    required this.draw,
+    required this.lose,
+    required this.goal,
+    required this.goalAgainst,
+    required this.leagueId,
+  });
 
   @override
   String toString() {

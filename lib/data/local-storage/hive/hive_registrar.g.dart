@@ -9,7 +9,9 @@ extension HiveRegistrar on HiveInterface {
   void registerAdapters() {
     registerAdapter(ClubModelAdapter());
     registerAdapter(GameSlotModelAdapter());
+    registerAdapter(HiveLeagueCountryAdapter());
     registerAdapter(HivePositionAdapter());
+    registerAdapter(LeagueModelAdapter());
     registerAdapter(PlayerModelAdapter());
   }
 }
