@@ -63,7 +63,7 @@ class ClubModelAdapter extends TypeAdapter<ClubModel> {
       id: (fields[0] as num).toInt(),
       name: fields[1] as String,
       gameSlotId: (fields[2] as num).toInt(),
-      leagueId: ((fields[8] ?? 0) as num).toInt(),
+      leagueId: (fields[8] as num).toInt(),
       win: (fields[3] as num).toInt(),
       draw: (fields[4] as num).toInt(),
       lose: (fields[5] as num).toInt(),
@@ -165,54 +165,9 @@ class PlayerModelAdapter extends TypeAdapter<PlayerModel> {
           typeId == other.typeId;
 }
 
-class HivePositionAdapter extends TypeAdapter<HivePosition> {
-  @override
-  final int typeId = 3;
-
-  @override
-  HivePosition read(BinaryReader reader) {
-    switch (reader.readByte()) {
-      case 0:
-        return HivePosition.forward;
-      case 1:
-        return HivePosition.midfield;
-      case 2:
-        return HivePosition.defense;
-      case 3:
-        return HivePosition.goalie;
-      default:
-        return HivePosition.forward;
-    }
-  }
-
-  @override
-  void write(BinaryWriter writer, HivePosition obj) {
-    switch (obj) {
-      case HivePosition.forward:
-        writer.writeByte(0);
-      case HivePosition.midfield:
-        writer.writeByte(1);
-      case HivePosition.defense:
-        writer.writeByte(2);
-      case HivePosition.goalie:
-        writer.writeByte(3);
-    }
-  }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is HivePositionAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
-}
-
 class LeagueModelAdapter extends TypeAdapter<LeagueModel> {
   @override
-  final int typeId = 4;
+  final int typeId = 3;
 
   @override
   LeagueModel read(BinaryReader reader) {
@@ -258,7 +213,7 @@ class LeagueModelAdapter extends TypeAdapter<LeagueModel> {
 
 class HiveLeagueCountryAdapter extends TypeAdapter<HiveLeagueCountry> {
   @override
-  final int typeId = 5;
+  final int typeId = 4;
 
   @override
   HiveLeagueCountry read(BinaryReader reader) {
@@ -361,6 +316,97 @@ class HiveLeagueCountryAdapter extends TypeAdapter<HiveLeagueCountry> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is HiveLeagueCountryAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class HivePositionAdapter extends TypeAdapter<HivePosition> {
+  @override
+  final int typeId = 5;
+
+  @override
+  HivePosition read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 0:
+        return HivePosition.forward;
+      case 1:
+        return HivePosition.midfield;
+      case 2:
+        return HivePosition.defense;
+      case 3:
+        return HivePosition.goalie;
+      default:
+        return HivePosition.forward;
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, HivePosition obj) {
+    switch (obj) {
+      case HivePosition.forward:
+        writer.writeByte(0);
+      case HivePosition.midfield:
+        writer.writeByte(1);
+      case HivePosition.defense:
+        writer.writeByte(2);
+      case HivePosition.goalie:
+        writer.writeByte(3);
+    }
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is HivePositionAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class SeasonModelAdapter extends TypeAdapter<SeasonModel> {
+  @override
+  final int typeId = 6;
+
+  @override
+  SeasonModel read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return SeasonModel(
+      id: (fields[0] as num).toInt(),
+      leagueId: (fields[1] as num).toInt(),
+      gameSlotId: (fields[2] as num).toInt(),
+      startDate: fields[3] as DateTime,
+      endDate: fields[4] as DateTime,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, SeasonModel obj) {
+    writer
+      ..writeByte(5)
+      ..writeByte(0)
+      ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.leagueId)
+      ..writeByte(2)
+      ..write(obj.gameSlotId)
+      ..writeByte(3)
+      ..write(obj.startDate)
+      ..writeByte(4)
+      ..write(obj.endDate);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SeasonModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

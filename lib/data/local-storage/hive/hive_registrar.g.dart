@@ -13,5 +13,6 @@ extension HiveRegistrar on HiveInterface {
     registerAdapter(HivePositionAdapter());
     registerAdapter(LeagueModelAdapter());
     registerAdapter(PlayerModelAdapter());
+    registerAdapter(SeasonModelAdapter());
   }
 }

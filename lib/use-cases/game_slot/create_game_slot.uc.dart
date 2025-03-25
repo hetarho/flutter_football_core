@@ -1,10 +1,12 @@
 import 'package:flutter_football_core/entities/country.enum.dart';
+import 'package:flutter_football_core/entities/game-slot/game_slot.dart';
 import 'package:flutter_football_core/entities/player/player.dart';
 import 'package:flutter_football_core/use-cases/_usecase.dart';
 import 'package:flutter_football_core/use-cases/club/create_club.uc.dart';
 import 'package:flutter_football_core/use-cases/interfaces/game_slot.repository.interface.dart';
 import 'package:flutter_football_core/use-cases/league/create_league.uc.dart';
 import 'package:flutter_football_core/use-cases/player/create_player.uc.dart';
+import 'package:flutter_football_core/use-cases/season/create_season.uc.dart';
 import 'package:get_it/get_it.dart';
 
 class CreateGameSlotUsecase extends Usecase<int, CreateGameSlotParams> {
@@ -12,16 +14,19 @@ class CreateGameSlotUsecase extends Usecase<int, CreateGameSlotParams> {
   final CreateClubUsecase _createClubUsecase;
   final CreatePlayerUsecase _createPlayerUsecase;
   final CreateLeagueUsecase _createLeagueUsecase;
+  final CreateSeasonUsecase _createSeasonUsecase;
 
   CreateGameSlotUsecase()
       : _gameSlotRepository = GetIt.I.get<GameSlotRepository>(),
         _createClubUsecase = GetIt.I.get<CreateClubUsecase>(),
         _createPlayerUsecase = GetIt.I.get<CreatePlayerUsecase>(),
-        _createLeagueUsecase = GetIt.I.get<CreateLeagueUsecase>();
+        _createLeagueUsecase = GetIt.I.get<CreateLeagueUsecase>(),
+        _createSeasonUsecase = GetIt.I.get<CreateSeasonUsecase>();
 
   @override
   Future<int> execute(CreateGameSlotParams params) async {
     int gameSlotId = await _gameSlotRepository.createGameSlot(saveName: params.saveName);
+    GameSlot gameSlot = await _gameSlotRepository.getGameSlot(gameSlotId);
 
     await Future.forEach(List.generate(4, (i) => i), (index) async {
       final leagueId = await _createLeagueUsecase.execute(CreateLeagueParams(
@@ -29,6 +34,13 @@ class CreateGameSlotUsecase extends Usecase<int, CreateGameSlotParams> {
         gameSlotId: gameSlotId,
         country: Country.england,
         tier: index + 1,
+      ));
+
+      await _createSeasonUsecase.execute(CreateSeasonParams(
+        leagueId: leagueId,
+        gameSlotId: gameSlotId,
+        startDate: gameSlot.createAt,
+        endDate: gameSlot.createAt.add(Duration(days: 365)),
       ));
 
       await Future.forEach(List.generate(20, (i) => i), (index) async {

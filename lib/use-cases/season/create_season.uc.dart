@@ -7,6 +7,7 @@ class CreateSeasonUsecase extends Usecase<int, CreateSeasonParams> {
 
   CreateSeasonUsecase() : _seasonRepository = GetIt.I.get<SeasonRepository>();
 
+  @override
   Future<int> execute(CreateSeasonParams params) async {
     return await _seasonRepository.createSeason(
       leagueId: params.leagueId,

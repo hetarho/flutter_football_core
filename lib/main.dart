@@ -9,15 +9,15 @@ import 'package:hive_ce_flutter/hive_flutter.dart';
 void main() async {
   await Hive.initFlutter();
 
-  // 의존성 주입 설정
-  setupLocator();
-  await GetIt.I.allReady();
-
   // 모델 어댑터 등록
   Hive.registerAdapters();
 
   // 필요한 Hive 박스 열기
   await Hive.openBoxes();
+
+  // 의존성 주입 설정
+  setupLocator();
+  await GetIt.I.allReady();
 
   runApp(const MyApp());
 }

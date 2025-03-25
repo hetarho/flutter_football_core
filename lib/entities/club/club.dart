@@ -6,9 +6,14 @@ class Club {
   final int gameSlotId;
   final int leagueId;
 
-  List<Player> players = [];
+  List<Player> _players = [];
+  List<Player> get players => _players;
   List<Player> get startingPlayers => players.where((player) => player.isStarting ?? false).toList();
   int get stat => players.fold(0, (sum, player) => sum + player.stat);
+
+  void setPlayers(List<Player> players) {
+    _players = players;
+  }
 
   int win;
   int draw;

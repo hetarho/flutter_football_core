@@ -19,7 +19,7 @@ class GetAllClubByGameSlotIdUsecase extends Usecase<List<Club>, GetAllClubByGame
 
     for (Club club in clubs) {
       List<Player> players = await _playerRepository.getAllPlayersByClubId(club.id);
-      club.players = players;
+      club.setPlayers(players);
     }
 
     return clubs;

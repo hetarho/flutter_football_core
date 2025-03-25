@@ -5,6 +5,7 @@ import 'package:flutter_football_core/data/model/league.model.dart';
 import 'package:flutter_football_core/entities/club/club.dart';
 import 'package:flutter_football_core/entities/game-slot/game_slot.dart';
 import 'package:flutter_football_core/entities/league/league.dart';
+import 'package:flutter_football_core/entities/season/season.dart';
 import 'package:flutter_football_core/presentation/components/button.dart';
 import 'package:flutter_football_core/presentation/components/delete_button.dart';
 import 'package:flutter_football_core/presentation/components/foldable_button.dart';
@@ -17,6 +18,7 @@ import 'package:flutter_football_core/use-cases/game_slot/get_all_game_slot.uc.d
 import 'package:flutter_football_core/use-cases/game_slot/get_game_slot.uc.dart';
 import 'package:flutter_football_core/use-cases/game_slot/update_game_slot.uc.dart';
 import 'package:flutter_football_core/use-cases/league/get_all_league_by_game_slot_id.dart';
+import 'package:flutter_football_core/use-cases/season/get_all_season_by_leagud_id.uc.dart';
 import 'package:gap/gap.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
@@ -215,6 +217,8 @@ class _LeagueCardState extends State<LeagueCard> {
         const Gap(16),
         if (folded) ...[
           ClubCards(leagueId: widget.league.id),
+          const Gap(16),
+          SeasonCard(leagueId: widget.league.id),
         ]
       ],
     );
@@ -252,5 +256,35 @@ class _ClubCardsState extends State<ClubCards> {
         Text(clubs.map((club) => club.name).join(', ')),
       ],
     );
+  }
+}
+
+class SeasonCard extends StatefulWidget {
+  final int leagueId;
+  const SeasonCard({super.key, required this.leagueId});
+
+  @override
+  State<SeasonCard> createState() => _SeasonCardState();
+}
+
+class _SeasonCardState extends State<SeasonCard> {
+  late GetAllSeasonByLeagueIdUsecase getAllSeasonByLeagueIdUsecase = GetIt.I.get<GetAllSeasonByLeagueIdUsecase>();
+  List<Season> seasons = [];
+  @override
+  void initState() {
+    super.initState();
+    _getAllSeasonByLeagueId();
+  }
+
+  Future<void> _getAllSeasonByLeagueId() async {
+    final seasons = await getAllSeasonByLeagueIdUsecase.execute(GetAllSeasonByLeagueIdParams(leagueId: widget.leagueId));
+    setState(() {
+      this.seasons = seasons;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(seasons.map((season) => season.name).join(', '));
   }
 }
