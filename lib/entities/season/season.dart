@@ -1,3 +1,5 @@
+import 'package:flutter_football_core/entities/fixture/fixture.dart';
+
 class Season {
   final int id;
   final int gameSlotId;
@@ -9,6 +11,13 @@ class Season {
     final startYear = startDate.year.toString().substring(2);
     final endYear = endDate.year.toString().substring(2);
     return '$startYear-$endYear';
+  }
+
+  List<Fixture> _fixtures = [];
+  List<Fixture> get fixtures => _fixtures;
+
+  void setFixtures(List<Fixture> fixtures) {
+    _fixtures = fixtures;
   }
 
   Season({

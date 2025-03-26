@@ -7,6 +7,7 @@ class League {
   String name;
   Country country;
   int tier;
+
   List<Season> _seasons = [];
   List<Season> get seasons => _seasons;
 

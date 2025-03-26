@@ -6,6 +6,17 @@ class Club {
   final int gameSlotId;
   final int leagueId;
 
+  int win;
+  int draw;
+  int lose;
+
+  int goal;
+  int goalAgainst;
+
+  int get pts => win * 3 + draw;
+
+  int get goalDifference => goal - goalAgainst;
+
   List<Player> _players = [];
   List<Player> get players => _players;
   List<Player> get startingPlayers => players.where((player) => player.isStarting ?? false).toList();
@@ -14,15 +25,6 @@ class Club {
   void setPlayers(List<Player> players) {
     _players = players;
   }
-
-  int win;
-  int draw;
-  int lose;
-  int get pts => win * 3 + draw;
-
-  int goal;
-  int goalAgainst;
-  int get goalDifference => goal - goalAgainst;
 
   Club({
     required this.id,

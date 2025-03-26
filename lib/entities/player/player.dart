@@ -2,14 +2,13 @@ class Player {
   final int id;
   final String name;
   final int gameSlotId;
+  int? clubId;
 
   Position position;
   int age;
   int? backNumber;
   int stat;
   bool? isStarting;
-
-  int? clubId;
 
   Player({
     required this.id,
