@@ -1,12 +1,14 @@
 import 'package:flutter_football_core/entities/country.enum.dart';
+import 'package:flutter_football_core/use-cases/_usecase.dart';
 import 'package:flutter_football_core/use-cases/interfaces/league.repository.interface.dart';
 import 'package:get_it/get_it.dart';
 
-class CreateLeagueUsecase {
+class CreateLeagueUsecase extends Usecase<int, CreateLeagueParams> {
   final LeagueRepository _leagueRepository;
 
   CreateLeagueUsecase() : _leagueRepository = GetIt.I.get<LeagueRepository>();
 
+  @override
   Future<int> execute(CreateLeagueParams params) async {
     return await _leagueRepository.createLeague(name: params.name, gameSlotId: params.gameSlotId, country: params.country, tier: params.tier);
   }

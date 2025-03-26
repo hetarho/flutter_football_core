@@ -1,5 +1,6 @@
 import 'package:flutter_football_core/entities/club/club.dart';
 import 'package:flutter_football_core/entities/country.enum.dart';
+import 'package:flutter_football_core/entities/fixture/fixture.dart';
 import 'package:flutter_football_core/entities/game-slot/game_slot.dart';
 import 'package:flutter_football_core/entities/league/league.dart';
 import 'package:flutter_football_core/entities/player/player.dart';
@@ -32,8 +33,7 @@ abstract class DataSource {
   Future<List<Club>> getAllClubsByGameSlotId(int gameSlotId);
   Future<List<Club>> getAllClubsByLeagueId(int leagueId);
 
-  Future<int> createPlayer(
-      {required String name, required Position position, required int age, required int stat, required int clubId, required int gameSlotId});
+  Future<int> createPlayer({required String name, required Position position, required int age, required int stat, required int clubId, required int gameSlotId});
   Future<List<Player>> getAllPlayersByClubId(int clubId);
   Future<void> deletePlayerByGameSlotId(int gameSlotId);
 
@@ -45,4 +45,7 @@ abstract class DataSource {
 
   Future<int> createSeason({required int leagueId, required int gameSlotId, required DateTime startDate, required DateTime endDate});
   Future<List<Season>> getAllSeasonsByLeagueId(int leagueId);
+
+  Future<int> createFixture({required int leagueId, required int gameSlotId, required int seasonId, required int homeClubId, required int awayClubId, required DateTime date});
+  Future<List<Fixture>> getFixturesByLeagueId(int leagueId);
 }

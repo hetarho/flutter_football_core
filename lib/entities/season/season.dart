@@ -18,4 +18,9 @@ class Season {
     required this.startDate,
     required this.endDate,
   });
+
+  @override
+  String toString() {
+    return 'Season(id: $id, gameSlotId: $gameSlotId, leagueId: $leagueId, startDate: $startDate, endDate: $endDate)';
+  }
 }

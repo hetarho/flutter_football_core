@@ -1,4 +1,5 @@
 import 'package:flutter_football_core/data/model/club.model.dart';
+import 'package:flutter_football_core/data/model/fixture.model.dart';
 import 'package:flutter_football_core/data/model/game_slot.model.dart';
 import 'package:flutter_football_core/data/model/league.model.dart';
 import 'package:flutter_football_core/data/model/player.model.dart';
@@ -18,5 +19,7 @@ extension HiveOpenBoxes on HiveInterface {
     await Hive.openBox<int>(LeagueModel.lastIdBoxName);
     await Hive.openBox(SeasonModel.boxName);
     await Hive.openBox<int>(SeasonModel.lastIdBoxName);
+    await Hive.openBox(FixtureModel.boxName);
+    await Hive.openBox<int>(FixtureModel.lastIdBoxName);
   }
 }

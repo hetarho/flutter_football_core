@@ -1,4 +1,5 @@
 import 'package:flutter_football_core/data/model/country.model.dart';
+import 'package:flutter_football_core/data/model/fixture.model.dart';
 import 'package:flutter_football_core/data/model/league.model.dart';
 import 'package:flutter_football_core/data/model/season.model.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
@@ -15,5 +16,6 @@ part 'hive_adapters.g.dart';
   AdapterSpec<HiveLeagueCountry>(),
   AdapterSpec<HivePosition>(),
   AdapterSpec<SeasonModel>(),
+  AdapterSpec<FixtureModel>(),
 ])
 class HiveAdapters {}

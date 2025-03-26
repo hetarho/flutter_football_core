@@ -1,11 +1,12 @@
 import 'package:flutter_football_core/adapters/club.adapter.dart';
-import 'package:flutter_football_core/adapters/country.adapter.dart';
+import 'package:flutter_football_core/adapters/fixture.adapter.dart';
 import 'package:flutter_football_core/adapters/game_slot.adapter.dart';
 import 'package:flutter_football_core/adapters/league.adapter.dart';
 import 'package:flutter_football_core/adapters/player.adapter.dart';
 import 'package:flutter_football_core/adapters/season.adapter.dart';
 import 'package:flutter_football_core/data/data-sources/interfaces/local_storage.interface.dart';
 import 'package:flutter_football_core/data/model/club.model.dart';
+import 'package:flutter_football_core/data/model/fixture.model.dart';
 import 'package:flutter_football_core/data/model/game_slot.model.dart';
 import 'package:flutter_football_core/data/model/league.model.dart';
 import 'package:flutter_football_core/data/model/player.model.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_football_core/data/model/season.model.dart';
 import 'package:flutter_football_core/data/repositories/interface/data_source.interface.dart';
 import 'package:flutter_football_core/entities/club/club.dart';
 import 'package:flutter_football_core/entities/country.enum.dart';
+import 'package:flutter_football_core/entities/fixture/fixture.dart';
 import 'package:flutter_football_core/entities/game-slot/game_slot.dart';
 import 'package:flutter_football_core/entities/league/league.dart';
 import 'package:flutter_football_core/entities/player/player.dart';
@@ -27,6 +29,8 @@ class LocalDataSource implements DataSource {
   final PlayerAdapter _playerAdapter = PlayerAdapter();
   final LeagueAdapter _leagueAdapter = LeagueAdapter();
   final SeasonAdapter _seasonAdapter = SeasonAdapter();
+  final FixtureAdapter _fixtureAdapter = FixtureAdapter();
+
   LocalDataSource() : _localStorage = GetIt.I.get<LocalStorage>();
 
   @override
@@ -134,8 +138,7 @@ class LocalDataSource implements DataSource {
   }
 
   @override
-  Future<int> createPlayer(
-      {required String name, required Position position, required int age, required int stat, required int clubId, required int gameSlotId}) async {
+  Future<int> createPlayer({required String name, required Position position, required int age, required int stat, required int clubId, required int gameSlotId}) async {
     final id = await _localStorage.getNextId(PlayerModel.boxName);
     final player = Player(
       id: id,
@@ -213,5 +216,30 @@ class LocalDataSource implements DataSource {
   Future<List<Season>> getAllSeasonsByLeagueId(int leagueId) async {
     final List<SeasonModel> models = await _localStorage.readAll(key: SeasonModel.boxName);
     return models.where((model) => model.leagueId == leagueId).map((model) => _seasonAdapter.toEntity(model)).toList();
+  }
+
+  @override
+  Future<int> createFixture({required int leagueId, required int gameSlotId, required int seasonId, required int homeClubId, required int awayClubId, required DateTime date}) async {
+    final id = await _localStorage.getNextId(FixtureModel.boxName);
+    final fixture = Fixture(
+        id: id,
+        leagueId: leagueId,
+        gameSlotId: gameSlotId,
+        seasonId: seasonId,
+        homeClubId: homeClubId,
+        awayClubId: awayClubId,
+        date: date,
+        homeScore: 0,
+        awayScore: 0,
+        homePossessionTime: Duration.zero,
+        awayPossessionTime: Duration.zero);
+    await _localStorage.create<FixtureModel>(key: FixtureModel.boxName, id: id, value: _fixtureAdapter.toModel(fixture));
+    return id;
+  }
+
+  @override
+  Future<List<Fixture>> getFixturesByLeagueId(int leagueId) async {
+    final List<FixtureModel> models = await _localStorage.readAll(key: FixtureModel.boxName);
+    return models.where((model) => model.leagueId == leagueId).map((model) => _fixtureAdapter.toEntity(model)).toList();
   }
 }

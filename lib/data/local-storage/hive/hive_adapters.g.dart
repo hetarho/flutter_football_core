@@ -410,3 +410,67 @@ class SeasonModelAdapter extends TypeAdapter<SeasonModel> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+class FixtureModelAdapter extends TypeAdapter<FixtureModel> {
+  @override
+  final int typeId = 7;
+
+  @override
+  FixtureModel read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return FixtureModel(
+      id: (fields[0] as num).toInt(),
+      leagueId: (fields[1] as num).toInt(),
+      gameSlotId: (fields[2] as num).toInt(),
+      seasonId: (fields[3] as num).toInt(),
+      homeClubId: (fields[4] as num).toInt(),
+      awayClubId: (fields[5] as num).toInt(),
+      date: fields[6] as DateTime,
+      homeScore: (fields[7] as num).toInt(),
+      awayScore: (fields[8] as num).toInt(),
+      homePossessionTime: fields[9] as Duration,
+      awayPossessionTime: fields[10] as Duration,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, FixtureModel obj) {
+    writer
+      ..writeByte(11)
+      ..writeByte(0)
+      ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.leagueId)
+      ..writeByte(2)
+      ..write(obj.gameSlotId)
+      ..writeByte(3)
+      ..write(obj.seasonId)
+      ..writeByte(4)
+      ..write(obj.homeClubId)
+      ..writeByte(5)
+      ..write(obj.awayClubId)
+      ..writeByte(6)
+      ..write(obj.date)
+      ..writeByte(7)
+      ..write(obj.homeScore)
+      ..writeByte(8)
+      ..write(obj.awayScore)
+      ..writeByte(9)
+      ..write(obj.homePossessionTime)
+      ..writeByte(10)
+      ..write(obj.awayPossessionTime);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FixtureModelAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
