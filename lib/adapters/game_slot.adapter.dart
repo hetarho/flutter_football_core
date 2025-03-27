@@ -11,6 +11,7 @@ class GameSlotAdapter implements EntityModelAdapter<GameSlot, GameSlotModel> {
       saveName: model.saveName,
       createAt: model.createAt,
       updateAt: model.updateAt,
+      selectedClubId: model.selectedClubId,
     );
   }
 
@@ -21,6 +22,7 @@ class GameSlotAdapter implements EntityModelAdapter<GameSlot, GameSlotModel> {
       saveName: entity.saveName,
       createAt: entity.createAt,
       updateAt: entity.updateAt,
+      selectedClubId: entity.selectedClubId,
     );
   }
 }

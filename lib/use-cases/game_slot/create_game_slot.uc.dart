@@ -1,3 +1,4 @@
+import 'package:flutter_football_core/constant/create_game_data.dart';
 import 'package:flutter_football_core/entities/country.enum.dart';
 import 'package:flutter_football_core/entities/game-slot/game_slot.dart';
 import 'package:flutter_football_core/entities/player/player.dart';
@@ -28,12 +29,12 @@ class CreateGameSlotUsecase extends Usecase<int, CreateGameSlotParams> {
     int gameSlotId = await _gameSlotRepository.createGameSlot(saveName: params.saveName);
     GameSlot gameSlot = await _gameSlotRepository.getGameSlot(gameSlotId);
 
-    await Future.forEach(List.generate(4, (i) => i), (index) async {
+    await Future.forEach(leagueSeedData, (league) async {
       final leagueId = await _createLeagueUsecase.execute(CreateLeagueParams(
-        name: '리그${index + 1}',
+        name: league['name'] as String,
         gameSlotId: gameSlotId,
-        country: Country.england,
-        tier: index + 1,
+        country: league['country'] as Country,
+        tier: league['tier'] as int,
       ));
 
       await _createSeasonUsecase.execute(CreateSeasonParams(
@@ -43,8 +44,8 @@ class CreateGameSlotUsecase extends Usecase<int, CreateGameSlotParams> {
         endDate: gameSlot.createAt.add(Duration(days: 365)),
       ));
 
-      await Future.forEach(List.generate(20, (i) => i), (index) async {
-        int clubId = await _createClubUsecase.execute(CreateClubParams(name: '팀${index + 1}', gameSlotId: gameSlotId, leagueId: leagueId));
+      await Future.forEach(clubSeedData[league['name'] as String] ?? [], (club) async {
+        int clubId = await _createClubUsecase.execute(CreateClubParams(name: club['name'] as String, gameSlotId: gameSlotId, leagueId: leagueId));
         await Future.forEach(List.generate(11, (i) => i), (index) async {
           await _createPlayerUsecase.execute(CreatePlayerParams(
               name: '플레이어${index + 1}',

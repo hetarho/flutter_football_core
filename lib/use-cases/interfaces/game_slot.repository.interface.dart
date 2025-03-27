@@ -1,7 +1,4 @@
-import 'package:flutter_football_core/entities/club/club.dart';
-import 'package:flutter_football_core/entities/fixture/fixture.dart';
 import 'package:flutter_football_core/entities/game-slot/game_slot.dart';
-import 'package:flutter_football_core/entities/player/player.dart';
 
 /// GameSlotRepository is a repository that manages game slots
 abstract class GameSlotRepository {
@@ -15,7 +12,7 @@ abstract class GameSlotRepository {
   Future<List<GameSlot>> getAllGameSlots();
 
   /// Update a game slot
-  Future<void> updateGameSlot({required int id, String? saveName});
+  Future<void> updateGameSlot({required int id, String? saveName, int? selectedClubId});
 
   /// Delete a game slot
   Future<void> deleteGameSlot(int id);

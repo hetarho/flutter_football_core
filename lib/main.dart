@@ -5,7 +5,7 @@ import 'package:flutter_football_core/di.dart';
 import 'package:flutter_football_core/route.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 void main() async {
   await Hive.initFlutter();
 
@@ -18,8 +18,7 @@ void main() async {
   // 의존성 주입 설정
   setupLocator();
   await GetIt.I.allReady();
-
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

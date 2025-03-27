@@ -28,7 +28,7 @@ class GameSlotRepositoryImpl implements GameSlotRepository {
   }
 
   @override
-  Future<void> updateGameSlot({required int id, String? saveName}) async {
-    return await _dataSource.updateGameSlot(id: id, saveName: saveName);
+  Future<void> updateGameSlot({required int id, String? saveName, int? selectedClubId}) async {
+    return await _dataSource.updateGameSlot(id: id, saveName: saveName, selectedClubId: selectedClubId);
   }
 }

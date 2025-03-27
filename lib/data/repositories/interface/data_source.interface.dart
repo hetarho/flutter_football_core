@@ -13,6 +13,7 @@ abstract class DataSource {
   Future<void> updateGameSlot({
     required int id,
     String? saveName,
+    int? selectedClubId,
   });
   Future<void> deleteGameSlot(int id);
 

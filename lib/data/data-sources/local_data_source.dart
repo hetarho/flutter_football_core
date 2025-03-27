@@ -55,6 +55,9 @@ class LocalDataSource implements DataSource {
   @override
   Future<List<GameSlot>> getAllGameSlots() async {
     final List<GameSlotModel> models = await _localStorage.readAll(key: GameSlotModel.boxName);
+    for (final model in models) {
+      print(model);
+    }
     // 모델 리스트를 엔티티 리스트로 변환
     return models.map((model) => _gameSlotAdapter.toEntity(model)).toList();
   }
@@ -70,9 +73,11 @@ class LocalDataSource implements DataSource {
   Future<void> updateGameSlot({
     required int id,
     String? saveName,
+    int? selectedClubId,
   }) async {
     final gameSlotModel = await _localStorage.read<GameSlotModel>(key: GameSlotModel.boxName, id: id);
-    final updatedGameSlotModel = gameSlotModel.copyWith(saveName: saveName ?? gameSlotModel.saveName, updateAt: DateTime.now());
+    final updatedGameSlotModel = gameSlotModel.copyWith(
+        saveName: saveName ?? gameSlotModel.saveName, selectedClubId: selectedClubId ?? gameSlotModel.selectedClubId, updateAt: DateTime.now());
     await _localStorage.update(key: GameSlotModel.boxName, id: id, value: updatedGameSlotModel);
   }
 
@@ -139,7 +144,8 @@ class LocalDataSource implements DataSource {
   }
 
   @override
-  Future<int> createPlayer({required String name, required Position position, required int age, required int stat, required int clubId, required int gameSlotId}) async {
+  Future<int> createPlayer(
+      {required String name, required Position position, required int age, required int stat, required int clubId, required int gameSlotId}) async {
     final id = await _localStorage.getNextId(PlayerModel.boxName);
     final player = Player(
       id: id,
@@ -173,8 +179,13 @@ class LocalDataSource implements DataSource {
   @override
   Future<void> updatePlayer({int? age, int? backNumber, int? clubId, required int id, bool? isStarting, Position? position, int? stat}) async {
     final playerModel = await _localStorage.read<PlayerModel>(key: PlayerModel.boxName, id: id);
-    final updatedPlayerModel =
-        playerModel.copyWith(age: age, backNumber: backNumber, clubId: clubId, isStarting: isStarting, position: position == null ? null : _positionAdapter.toModel(position), stat: stat);
+    final updatedPlayerModel = playerModel.copyWith(
+        age: age,
+        backNumber: backNumber,
+        clubId: clubId,
+        isStarting: isStarting,
+        position: position == null ? null : _positionAdapter.toModel(position),
+        stat: stat);
     await _localStorage.update(key: PlayerModel.boxName, id: id, value: updatedPlayerModel);
   }
 
@@ -228,7 +239,13 @@ class LocalDataSource implements DataSource {
   }
 
   @override
-  Future<int> createFixture({required int leagueId, required int gameSlotId, required int seasonId, required int homeClubId, required int awayClubId, required DateTime date}) async {
+  Future<int> createFixture(
+      {required int leagueId,
+      required int gameSlotId,
+      required int seasonId,
+      required int homeClubId,
+      required int awayClubId,
+      required DateTime date}) async {
     final id = await _localStorage.getNextId(FixtureModel.boxName);
     final fixture = Fixture(
         id: id,
