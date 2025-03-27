@@ -30,6 +30,7 @@ class LocalDataSource implements DataSource {
   final LeagueAdapter _leagueAdapter = LeagueAdapter();
   final SeasonAdapter _seasonAdapter = SeasonAdapter();
   final FixtureAdapter _fixtureAdapter = FixtureAdapter();
+  final PositionAdapter _positionAdapter = PositionAdapter();
 
   LocalDataSource() : _localStorage = GetIt.I.get<LocalStorage>();
 
@@ -71,7 +72,7 @@ class LocalDataSource implements DataSource {
     String? saveName,
   }) async {
     final gameSlotModel = await _localStorage.read<GameSlotModel>(key: GameSlotModel.boxName, id: id);
-    final updatedGameSlotModel = gameSlotModel.copyWith(saveName: saveName, updateAt: DateTime.now());
+    final updatedGameSlotModel = gameSlotModel.copyWith(saveName: saveName ?? gameSlotModel.saveName, updateAt: DateTime.now());
     await _localStorage.update(key: GameSlotModel.boxName, id: id, value: updatedGameSlotModel);
   }
 
@@ -170,6 +171,14 @@ class LocalDataSource implements DataSource {
   }
 
   @override
+  Future<void> updatePlayer({int? age, int? backNumber, int? clubId, required int id, bool? isStarting, Position? position, int? stat}) async {
+    final playerModel = await _localStorage.read<PlayerModel>(key: PlayerModel.boxName, id: id);
+    final updatedPlayerModel =
+        playerModel.copyWith(age: age, backNumber: backNumber, clubId: clubId, isStarting: isStarting, position: position == null ? null : _positionAdapter.toModel(position), stat: stat);
+    await _localStorage.update(key: PlayerModel.boxName, id: id, value: updatedPlayerModel);
+  }
+
+  @override
   Future<int> createLeague({required String name, required int gameSlotId, required Country country, required int tier}) async {
     final id = await _localStorage.getNextId(LeagueModel.boxName);
     final league = League(id: id, name: name, gameSlotId: gameSlotId, country: country, tier: tier);
@@ -241,5 +250,12 @@ class LocalDataSource implements DataSource {
   Future<List<Fixture>> getFixturesByLeagueId(int leagueId) async {
     final List<FixtureModel> models = await _localStorage.readAll(key: FixtureModel.boxName);
     return models.where((model) => model.leagueId == leagueId).map((model) => _fixtureAdapter.toEntity(model)).toList();
+  }
+
+  @override
+  Future<void> updateFixture({required int id, required int homeScore, required int awayScore}) async {
+    final fixtureModel = await _localStorage.read<FixtureModel>(key: FixtureModel.boxName, id: id);
+    final updatedFixtureModel = fixtureModel.copyWith(homeScore: homeScore, awayScore: awayScore);
+    await _localStorage.update(key: FixtureModel.boxName, id: id, value: updatedFixtureModel);
   }
 }

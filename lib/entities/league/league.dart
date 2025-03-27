@@ -1,3 +1,4 @@
+import 'package:flutter_football_core/entities/club/club.dart';
 import 'package:flutter_football_core/entities/country.enum.dart';
 import 'package:flutter_football_core/entities/season/season.dart';
 
@@ -11,8 +12,15 @@ class League {
   List<Season> _seasons = [];
   List<Season> get seasons => _seasons;
 
+  List<Club> _clubs = [];
+  List<Club> get clubs => _clubs;
+
   void setSeasons(List<Season> seasons) {
     _seasons = seasons;
+  }
+
+  void setClubs(List<Club> clubs) {
+    _clubs = clubs;
   }
 
   League({

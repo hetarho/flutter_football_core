@@ -10,7 +10,7 @@ class UpdateGameSlotUsecase extends Usecase<void, UpdateGameSlotParams> {
   @override
   Future<void> execute(UpdateGameSlotParams params) async {
     await _gameSlotRepository.updateGameSlot(id: params.id, saveName: params.saveName);
-  }
+   }
 }
 
 class UpdateGameSlotParams {

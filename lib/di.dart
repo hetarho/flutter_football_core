@@ -12,6 +12,7 @@ import 'package:flutter_football_core/use-cases/club/get_all_club_by_game_slot_i
 import 'package:flutter_football_core/use-cases/club/get_club.uc.dart';
 import 'package:flutter_football_core/use-cases/club/get_club_by_league_id.dart';
 import 'package:flutter_football_core/use-cases/club/recode_fixture_result.uc.dart';
+import 'package:flutter_football_core/use-cases/fixture/create_fixture.uc.dart';
 import 'package:flutter_football_core/use-cases/interfaces/club.repository.interface.dart';
 import 'package:flutter_football_core/use-cases/interfaces/game_slot.repository.interface.dart';
 import 'package:flutter_football_core/use-cases/game_slot/get_all_game_slot.uc.dart';
@@ -51,7 +52,7 @@ void setupLocator() {
   locator.registerLazySingleton<GetClubUsecase>(() => GetClubUsecase());
   locator.registerLazySingleton<GetAllClubByGameSlotIdUsecase>(() => GetAllClubByGameSlotIdUsecase());
   locator.registerLazySingleton<GetClubByLeagueIdUsecase>(() => GetClubByLeagueIdUsecase());
-  
+
   locator.registerLazySingleton<CreatePlayerUsecase>(() => CreatePlayerUsecase());
   locator.registerLazySingleton<GetAllPlayerByClubIdUsecase>(() => GetAllPlayerByClubIdUsecase());
 
@@ -60,4 +61,6 @@ void setupLocator() {
 
   locator.registerLazySingleton<CreateSeasonUsecase>(() => CreateSeasonUsecase());
   locator.registerLazySingleton<GetAllSeasonByLeagueIdUsecase>(() => GetAllSeasonByLeagueIdUsecase());
+
+  locator.registerLazySingleton<CreateFixtureUsecase>(() => CreateFixtureUsecase());
 }

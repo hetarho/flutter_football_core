@@ -39,4 +39,28 @@ class PlayerModel extends HiveObject {
     this.backNumber,
     this.isStarting,
   });
+
+  PlayerModel copyWith({
+    int? id,
+    String? name,
+    HivePosition? position,
+    int? age,
+    int? backNumber,
+    int? stat,
+    bool? isStarting,
+    int? clubId,
+    int? gameSlotId,
+  }) {
+    return PlayerModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      position: position ?? this.position,
+      age: age ?? this.age,
+      backNumber: backNumber ?? this.backNumber,
+      stat: stat ?? this.stat,
+      clubId: clubId ?? this.clubId,
+      gameSlotId: gameSlotId ?? this.gameSlotId,  
+      isStarting: isStarting ?? this.isStarting,
+    );
+  }
 }

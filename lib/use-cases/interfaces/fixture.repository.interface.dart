@@ -13,4 +13,11 @@ abstract class FixtureRepository {
 
   /// Get all fixtures by league id
   Future<List<Fixture>> getFixturesByLeagueId(int leagueId);
+
+  /// Update a fixture
+  Future<void> updateFixture({
+    required int id,
+    required int homeScore,
+    required int awayScore,
+  });
 }

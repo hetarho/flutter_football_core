@@ -16,4 +16,9 @@ class FixtureRepositoryImpl extends FixtureRepository {
   Future<List<Fixture>> getFixturesByLeagueId(int leagueId) async {
     return await _dataSource.getFixturesByLeagueId(leagueId);
   }
+
+  @override
+  Future<void> updateFixture({required int id, required int homeScore, required int awayScore}) async {
+    return await _dataSource.updateFixture(id: id, homeScore: homeScore, awayScore: awayScore);
+  }
 }

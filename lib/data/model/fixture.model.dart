@@ -29,4 +29,32 @@ class FixtureModel extends HiveObject {
     required this.homePossessionTime,
     required this.awayPossessionTime,
   });
+
+  FixtureModel copyWith({
+    int? id,
+    int? leagueId,
+    int? gameSlotId,
+    int? seasonId,
+    int? homeClubId,
+    int? awayClubId,
+    DateTime? date,
+    int? homeScore,
+    int? awayScore,
+    Duration? homePossessionTime,
+    Duration? awayPossessionTime,
+  }) {
+    return FixtureModel(
+      id: id ?? this.id,
+      leagueId: leagueId ?? this.leagueId,
+      gameSlotId: gameSlotId ?? this.gameSlotId,
+      seasonId: seasonId ?? this.seasonId,
+      homeClubId: homeClubId ?? this.homeClubId,
+      awayClubId: awayClubId ?? this.awayClubId,
+      date: date ?? this.date,
+      homeScore: homeScore ?? this.homeScore,
+      awayScore: awayScore ?? this.awayScore,
+      homePossessionTime: homePossessionTime ?? this.homePossessionTime,
+      awayPossessionTime: awayPossessionTime ?? this.awayPossessionTime,
+    );
+  }
 }

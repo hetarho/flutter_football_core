@@ -22,4 +22,9 @@ class PlayerRepositoryImpl implements PlayerRepository {
   Future<void> deletePlayerByGameSlotId(int gameSlotId) async {
     return await _dataSource.deletePlayerByGameSlotId(gameSlotId);
   }
+
+  @override
+  Future<void> updatePlayer({int? age, int? backNumber, int? clubId, required int id, bool? isStarting, Position? position, int? stat}) async {
+    return await _dataSource.updatePlayer(age: age, backNumber: backNumber, clubId: clubId, id: id, isStarting: isStarting, position: position, stat: stat);
+  }
 }
