@@ -126,8 +126,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('create: ${gameSlot.createAt.toString().substring(0, 19)}'),
-                              Text('last play: ${gameSlot.updateAt.toString().substring(0, 19)}'),
+                              Text('생성일: ${gameSlot.createAt.toString().substring(2, 19).replaceAll('-', '/')}'),
+                              Text('저장일: ${gameSlot.updateAt.toString().substring(2, 19).replaceAll('-', '/')}'),
                             ],
                           ),
                           const Gap(16),

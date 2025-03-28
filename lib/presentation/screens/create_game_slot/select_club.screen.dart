@@ -4,6 +4,7 @@ import 'package:flutter_football_core/presentation/components/select_button.dart
 import 'package:flutter_football_core/presentation/providers/club.provider.dart';
 import 'package:flutter_football_core/presentation/providers/game_slot.provider.dart';
 import 'package:flutter_football_core/presentation/screens/dashboard/dashboard.screen.dart';
+import 'package:flutter_football_core/presentation/screens/home/home.screen.dart';
 import 'package:flutter_football_core/use-cases/game_slot/get_game_slot.uc.dart';
 import 'package:flutter_football_core/use-cases/game_slot/update_game_slot.uc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,6 +31,10 @@ class _SelectClubScreenState extends ConsumerState<SelectClubScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Select Club'),
+        leading: IconButton(
+          onPressed: () => context.pushReplacement(HomeScreen.routeName),
+          icon: const Icon(Icons.arrow_back),
+        ),
       ),
       body: Column(
         children: [

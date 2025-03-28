@@ -5,7 +5,7 @@ nextTypeId: 8
 types:
   GameSlotModel:
     typeId: 0
-    nextIndex: 4
+    nextIndex: 5
     fields:
       id:
         index: 0
@@ -15,6 +15,8 @@ types:
         index: 2
       updateAt:
         index: 3
+      selectedClubId:
+        index: 4
   ClubModel:
     typeId: 1
     nextIndex: 9

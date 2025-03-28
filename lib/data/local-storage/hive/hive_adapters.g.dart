@@ -21,13 +21,14 @@ class GameSlotModelAdapter extends TypeAdapter<GameSlotModel> {
       saveName: fields[1] as String,
       createAt: fields[2] as DateTime,
       updateAt: fields[3] as DateTime,
+      selectedClubId: (fields[4] as num?)?.toInt(),
     );
   }
 
   @override
   void write(BinaryWriter writer, GameSlotModel obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class GameSlotModelAdapter extends TypeAdapter<GameSlotModel> {
       ..writeByte(2)
       ..write(obj.createAt)
       ..writeByte(3)
-      ..write(obj.updateAt);
+      ..write(obj.updateAt)
+      ..writeByte(4)
+      ..write(obj.selectedClubId);
   }
 
   @override
