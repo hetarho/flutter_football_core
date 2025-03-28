@@ -53,6 +53,8 @@ class PlayerAdapter implements EntityModelAdapter<Player, PlayerModel> {
       stat: entity.stat,
       clubId: entity.clubId,
       gameSlotId: entity.gameSlotId,
+      isStarting: entity.isStarting,
+      backNumber: entity.backNumber,
     );
   }
 }

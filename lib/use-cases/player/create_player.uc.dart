@@ -17,6 +17,8 @@ class CreatePlayerUsecase extends Usecase<int, CreatePlayerParams> {
       stat: params.stat,
       clubId: params.clubId,
       gameSlotId: params.gameSlotId,
+      backNumber: params.backNumber,
+      isStarting: params.isStarting,
     );
   }
 }
@@ -26,9 +28,18 @@ class CreatePlayerParams {
   final Position position;
   final int age;
   final int stat;
-  final int clubId;
+  final int? clubId;
   final int gameSlotId;
+  final int? backNumber;
+  final bool? isStarting;
 
   CreatePlayerParams(
-      {required this.name, required this.position, required this.age, required this.stat, required this.clubId, required this.gameSlotId});
+      {required this.name,
+      required this.position,
+      required this.age,
+      required this.stat,
+      this.clubId,
+      required this.gameSlotId,
+      this.backNumber,
+      this.isStarting});
 }

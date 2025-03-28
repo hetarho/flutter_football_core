@@ -34,10 +34,11 @@ abstract class DataSource {
   Future<List<Club>> getAllClubsByGameSlotId(int gameSlotId);
   Future<List<Club>> getAllClubsByLeagueId(int leagueId);
 
-  Future<int> createPlayer({required String name, required Position position, required int age, required int stat, required int clubId, required int gameSlotId});
+  Future<int> createPlayer({required String name, required Position position, required int age, required int stat, int? clubId, required int gameSlotId, int? backNumber, bool? isStarting});
   Future<List<Player>> getAllPlayersByClubId(int clubId);
   Future<void> deletePlayerByGameSlotId(int gameSlotId);
   Future<void> updatePlayer({int? age, int? backNumber, int? clubId, required int id, bool? isStarting, Position? position, int? stat});
+  Future<List<Player>> getAllPlayersByGameSlotId(int gameSlotId);
 
   Future<int> createLeague({required String name, required int gameSlotId, required Country country, required int tier});
   Future<League> getLeague(int id);

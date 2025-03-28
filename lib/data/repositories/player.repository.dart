@@ -9,8 +9,8 @@ class PlayerRepositoryImpl implements PlayerRepository {
 
   @override
   Future<int> createPlayer(
-      {required String name, required Position position, required int age, required int stat, required int clubId, required int gameSlotId}) async {
-    return await _dataSource.createPlayer(name: name, position: position, age: age, stat: stat, clubId: clubId, gameSlotId: gameSlotId);
+      {required String name, required Position position, required int age, required int stat, int? clubId, required int gameSlotId, int? backNumber, bool? isStarting}) async {
+    return await _dataSource.createPlayer(name: name, position: position, age: age, stat: stat, clubId: clubId, gameSlotId: gameSlotId, backNumber: backNumber, isStarting: isStarting);
   }
 
   @override
@@ -26,5 +26,10 @@ class PlayerRepositoryImpl implements PlayerRepository {
   @override
   Future<void> updatePlayer({int? age, int? backNumber, int? clubId, required int id, bool? isStarting, Position? position, int? stat}) async {
     return await _dataSource.updatePlayer(age: age, backNumber: backNumber, clubId: clubId, id: id, isStarting: isStarting, position: position, stat: stat);
+  }
+
+  @override
+  Future<List<Player>> getAllPlayersByGameSlotId(int gameSlotId) async {
+    return await _dataSource.getAllPlayersByGameSlotId(gameSlotId);
   }
 }

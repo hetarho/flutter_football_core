@@ -7,8 +7,10 @@ abstract class PlayerRepository {
     required Position position,
     required int age,
     required int stat,
-    required int clubId,
+    int? clubId,
     required int gameSlotId,
+    int? backNumber,
+    bool? isStarting,
   });
 
   /// Get all players by club id
@@ -27,4 +29,7 @@ abstract class PlayerRepository {
     int? backNumber,
     bool? isStarting,
   });
+
+  /// Get all players by game slot id
+  Future<List<Player>> getAllPlayersByGameSlotId(int gameSlotId);
 }

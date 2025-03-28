@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter_football_core/constant/create_game_data.dart';
 import 'package:flutter_football_core/entities/country.enum.dart';
 import 'package:flutter_football_core/entities/game-slot/game_slot.dart';
@@ -46,21 +48,60 @@ class CreateGameSlotUsecase extends Usecase<int, CreateGameSlotParams> {
 
       await Future.forEach(clubSeedData[league['name'] as String] ?? [], (club) async {
         int clubId = await _createClubUsecase.execute(CreateClubParams(name: club['name'] as String, gameSlotId: gameSlotId, leagueId: leagueId));
+
+        //최소 11명 생성
         await Future.forEach(List.generate(11, (i) => i), (index) async {
           await _createPlayerUsecase.execute(CreatePlayerParams(
-              name: '플레이어${index + 1}',
-              clubId: clubId,
-              gameSlotId: gameSlotId,
-              position: switch (index % 3) {
-                0 => Position.forward,
-                1 => Position.midfield,
-                2 => Position.defense,
-                _ => Position.goalie,
-              },
-              age: 20,
-              stat: 100));
+            name: '플레이어${index + 1}',
+            clubId: clubId,
+            gameSlotId: gameSlotId,
+            position: switch (index % 3) {
+              0 => Position.forward,
+              1 => Position.midfield,
+              2 => Position.defense,
+              _ => Position.goalie,
+            },
+            age: Random().nextInt(18) + 16,
+            stat: Random().nextInt(100) + 20 * (league['tier'] as int),
+            backNumber: index + 1,
+            isStarting: true,
+          ));
+        });
+
+        //추가 플레이어 생성
+        int additionalPlayerCount = 3 + Random().nextInt(10);
+        await Future.forEach(List.generate(additionalPlayerCount, (i) => i), (index) async {
+          await _createPlayerUsecase.execute(CreatePlayerParams(
+            name: 'SUB플레이어${index + 1}',
+            clubId: clubId,
+            gameSlotId: gameSlotId,
+            position: switch (Random().nextInt(4)) {
+              0 => Position.forward,
+              1 => Position.midfield,
+              2 => Position.defense,
+              _ => Position.goalie,
+            },
+            age: Random().nextInt(18) + 16,
+            stat: Random().nextInt(80) + 20 * (league['tier'] as int),
+          ));
         });
       });
+    });
+
+    int freePlayerCount = 10 + Random().nextInt(20);
+    await Future.forEach(List.generate(freePlayerCount, (i) => i), (index) async {
+      await _createPlayerUsecase.execute(CreatePlayerParams(
+        name: '플레이어${index + 1}',
+        gameSlotId: gameSlotId,
+        position: switch (Random().nextInt(4)) {
+          0 => Position.forward,
+          1 => Position.midfield,
+          2 => Position.defense,
+          _ => Position.goalie,
+        },
+        age: Random().nextInt(18) + 16,
+        stat: Random().nextInt(70) + 20,
+      ));
     });
 
     return gameSlotId;
