@@ -41,6 +41,7 @@ dependencies:
   go_router: ^14.8.1
   riverpod: ^2.6.1
   flutter_riverpod: ^2.6.1
+  random_name_generator: ^1.5.0
 
 dev_dependencies:
   flutter_test:

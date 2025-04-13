@@ -1,3 +1,4 @@
+import 'package:flutter_football_core/entities/country.enum.dart';
 import 'package:flutter_football_core/entities/player/player.dart';
 
 abstract class PlayerRepository {
@@ -11,6 +12,7 @@ abstract class PlayerRepository {
     required int gameSlotId,
     int? backNumber,
     bool? isStarting,
+    required Country country,
   });
 
   /// Get all players by club id

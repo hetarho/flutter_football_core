@@ -7,6 +7,7 @@ import 'package:flutter_football_core/entities/player/player.dart';
 import 'package:flutter_football_core/use-cases/_usecase.dart';
 import 'package:flutter_football_core/use-cases/club/create_club.uc.dart';
 import 'package:flutter_football_core/use-cases/interfaces/game_slot.repository.interface.dart';
+import 'package:flutter_football_core/use-cases/interfaces/random_manager.util.interface.dart';
 import 'package:flutter_football_core/use-cases/league/create_league.uc.dart';
 import 'package:flutter_football_core/use-cases/player/create_player.uc.dart';
 import 'package:flutter_football_core/use-cases/season/create_season.uc.dart';
@@ -14,6 +15,7 @@ import 'package:get_it/get_it.dart';
 
 class CreateGameSlotUsecase extends Usecase<int, CreateGameSlotParams> {
   final GameSlotRepository _gameSlotRepository;
+  final RandomManager _randomManager;
   final CreateClubUsecase _createClubUsecase;
   final CreatePlayerUsecase _createPlayerUsecase;
   final CreateLeagueUsecase _createLeagueUsecase;
@@ -24,7 +26,8 @@ class CreateGameSlotUsecase extends Usecase<int, CreateGameSlotParams> {
         _createClubUsecase = GetIt.I.get<CreateClubUsecase>(),
         _createPlayerUsecase = GetIt.I.get<CreatePlayerUsecase>(),
         _createLeagueUsecase = GetIt.I.get<CreateLeagueUsecase>(),
-        _createSeasonUsecase = GetIt.I.get<CreateSeasonUsecase>();
+        _createSeasonUsecase = GetIt.I.get<CreateSeasonUsecase>(),
+        _randomManager = GetIt.I.get<RandomManager>();
 
   @override
   Future<int> execute(CreateGameSlotParams params) async {
@@ -51,8 +54,9 @@ class CreateGameSlotUsecase extends Usecase<int, CreateGameSlotParams> {
 
         //최소 11명 생성
         await Future.forEach(List.generate(11, (i) => i), (index) async {
+          Country randomCountry = RandomCountry.random();
           await _createPlayerUsecase.execute(CreatePlayerParams(
-            name: '플레이어${index + 1}',
+            name: _randomManager.generateRandomName(country: randomCountry),
             clubId: clubId,
             gameSlotId: gameSlotId,
             position: switch (index % 3) {
@@ -65,14 +69,16 @@ class CreateGameSlotUsecase extends Usecase<int, CreateGameSlotParams> {
             stat: Random().nextInt(100) + 20 * (league['tier'] as int),
             backNumber: index + 1,
             isStarting: true,
+            country: randomCountry,
           ));
         });
 
         //추가 플레이어 생성
         int additionalPlayerCount = 3 + Random().nextInt(10);
         await Future.forEach(List.generate(additionalPlayerCount, (i) => i), (index) async {
+          Country randomCountry = RandomCountry.random();
           await _createPlayerUsecase.execute(CreatePlayerParams(
-            name: 'SUB플레이어${index + 1}',
+            name: _randomManager.generateRandomName(country: randomCountry),
             clubId: clubId,
             gameSlotId: gameSlotId,
             position: switch (Random().nextInt(4)) {
@@ -83,6 +89,7 @@ class CreateGameSlotUsecase extends Usecase<int, CreateGameSlotParams> {
             },
             age: Random().nextInt(18) + 16,
             stat: Random().nextInt(80) + 20 * (league['tier'] as int),
+            country: randomCountry,
           ));
         });
       });
@@ -90,8 +97,9 @@ class CreateGameSlotUsecase extends Usecase<int, CreateGameSlotParams> {
 
     int freePlayerCount = 10 + Random().nextInt(20);
     await Future.forEach(List.generate(freePlayerCount, (i) => i), (index) async {
+      Country randomCountry = RandomCountry.random();
       await _createPlayerUsecase.execute(CreatePlayerParams(
-        name: '플레이어${index + 1}',
+        name: _randomManager.generateRandomName(country: randomCountry),
         gameSlotId: gameSlotId,
         position: switch (Random().nextInt(4)) {
           0 => Position.forward,
@@ -101,6 +109,7 @@ class CreateGameSlotUsecase extends Usecase<int, CreateGameSlotParams> {
         },
         age: Random().nextInt(18) + 16,
         stat: Random().nextInt(70) + 20,
+        country: randomCountry,
       ));
     });
 

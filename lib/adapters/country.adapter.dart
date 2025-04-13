@@ -1,11 +1,11 @@
 import 'package:flutter_football_core/adapters/_adapter.dart';
-import 'package:flutter_football_core/data/model/country.model.dart';
+import 'package:flutter_football_core/data/model/enums/country.enum.dart';
 import 'package:flutter_football_core/entities/country.enum.dart';
 
-class CountryAdapter implements EntityModelAdapter<Country, HiveLeagueCountry> {
+class CountryAdapter implements EntityModelAdapter<Country, HiveCountry> {
   @override
-  Country toEntity(HiveLeagueCountry model) => Country.values[model.index];
+  Country toEntity(HiveCountry model) => Country.values[model.index];
 
   @override
-  HiveLeagueCountry toModel(Country entity) => HiveLeagueCountry.values[entity.index];
+  HiveCountry toModel(Country entity) => HiveCountry.values[entity.index];
 }

@@ -1,3 +1,4 @@
+import 'package:flutter_football_core/entities/country.enum.dart';
 import 'package:flutter_football_core/entities/player/player.dart';
 import 'package:flutter_football_core/use-cases/_usecase.dart';
 import 'package:flutter_football_core/use-cases/interfaces/player.repository.interface.dart';
@@ -19,6 +20,7 @@ class CreatePlayerUsecase extends Usecase<int, CreatePlayerParams> {
       gameSlotId: params.gameSlotId,
       backNumber: params.backNumber,
       isStarting: params.isStarting,
+      country: params.country,
     );
   }
 }
@@ -32,7 +34,7 @@ class CreatePlayerParams {
   final int gameSlotId;
   final int? backNumber;
   final bool? isStarting;
-
+  final Country country;
   CreatePlayerParams(
       {required this.name,
       required this.position,
@@ -41,5 +43,6 @@ class CreatePlayerParams {
       this.clubId,
       required this.gameSlotId,
       this.backNumber,
-      this.isStarting});
+      this.isStarting,
+      required this.country});
 }

@@ -1,7 +1,9 @@
 import 'package:hive_ce_flutter/hive_flutter.dart';
 
-@HiveType(typeId: 2)
-enum HiveLeagueCountry {
+part 'country.enum.g.dart';
+
+@HiveType(typeId: 100)
+enum HiveCountry {
   @HiveField(0)
   england,
   @HiveField(1)

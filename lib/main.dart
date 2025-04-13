@@ -6,8 +6,12 @@ import 'package:flutter_football_core/route.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 void main() async {
   await Hive.initFlutter();
+
+  // // 모든 Hive 데이터 삭제
+  await Hive.deleteFromDisk();
 
   // 모델 어댑터 등록
   Hive.registerAdapters();

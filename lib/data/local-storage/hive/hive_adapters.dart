@@ -1,4 +1,5 @@
-import 'package:flutter_football_core/data/model/country.model.dart';
+import 'package:flutter_football_core/data/model/enums/country.enum.dart';
+import 'package:flutter_football_core/data/model/enums/position.enum.dart';
 import 'package:flutter_football_core/data/model/fixture.model.dart';
 import 'package:flutter_football_core/data/model/league.model.dart';
 import 'package:flutter_football_core/data/model/season.model.dart';
@@ -13,7 +14,7 @@ part 'hive_adapters.g.dart';
   AdapterSpec<ClubModel>(),
   AdapterSpec<PlayerModel>(),
   AdapterSpec<LeagueModel>(),
-  AdapterSpec<HiveLeagueCountry>(),
+  AdapterSpec<HiveCountry>(),
   AdapterSpec<HivePosition>(),
   AdapterSpec<SeasonModel>(),
   AdapterSpec<FixtureModel>(),

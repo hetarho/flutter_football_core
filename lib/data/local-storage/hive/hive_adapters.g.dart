@@ -21,6 +21,7 @@ class GameSlotModelAdapter extends TypeAdapter<GameSlotModel> {
       saveName: fields[1] as String,
       createAt: fields[2] as DateTime,
       updateAt: fields[3] as DateTime,
+      inGameTime: fields[5] as DateTime?,
       selectedClubId: (fields[4] as num?)?.toInt(),
     );
   }
@@ -28,7 +29,7 @@ class GameSlotModelAdapter extends TypeAdapter<GameSlotModel> {
   @override
   void write(BinaryWriter writer, GameSlotModel obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class GameSlotModelAdapter extends TypeAdapter<GameSlotModel> {
       ..writeByte(3)
       ..write(obj.updateAt)
       ..writeByte(4)
-      ..write(obj.selectedClubId);
+      ..write(obj.selectedClubId)
+      ..writeByte(5)
+      ..write(obj.inGameTime);
   }
 
   @override
@@ -130,13 +133,14 @@ class PlayerModelAdapter extends TypeAdapter<PlayerModel> {
       gameSlotId: (fields[2] as num).toInt(),
       backNumber: (fields[5] as num?)?.toInt(),
       isStarting: fields[7] as bool?,
+      country: fields[9] as HiveCountry,
     );
   }
 
   @override
   void write(BinaryWriter writer, PlayerModel obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -154,7 +158,9 @@ class PlayerModelAdapter extends TypeAdapter<PlayerModel> {
       ..writeByte(7)
       ..write(obj.isStarting)
       ..writeByte(8)
-      ..write(obj.clubId);
+      ..write(obj.clubId)
+      ..writeByte(9)
+      ..write(obj.country);
   }
 
   @override
@@ -182,7 +188,7 @@ class LeagueModelAdapter extends TypeAdapter<LeagueModel> {
       id: (fields[0] as num).toInt(),
       gameSlotId: (fields[1] as num).toInt(),
       name: fields[2] as String,
-      country: fields[3] as HiveLeagueCountry,
+      country: fields[3] as HiveCountry,
       tier: (fields[4] as num).toInt(),
     );
   }
@@ -210,115 +216,6 @@ class LeagueModelAdapter extends TypeAdapter<LeagueModel> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is LeagueModelAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
-}
-
-class HiveLeagueCountryAdapter extends TypeAdapter<HiveLeagueCountry> {
-  @override
-  final int typeId = 4;
-
-  @override
-  HiveLeagueCountry read(BinaryReader reader) {
-    switch (reader.readByte()) {
-      case 0:
-        return HiveLeagueCountry.england;
-      case 1:
-        return HiveLeagueCountry.spain;
-      case 2:
-        return HiveLeagueCountry.italy;
-      case 3:
-        return HiveLeagueCountry.germany;
-      case 4:
-        return HiveLeagueCountry.france;
-      case 5:
-        return HiveLeagueCountry.portugal;
-      case 6:
-        return HiveLeagueCountry.argentina;
-      case 7:
-        return HiveLeagueCountry.brazil;
-      case 8:
-        return HiveLeagueCountry.colombia;
-      case 9:
-        return HiveLeagueCountry.chile;
-      case 10:
-        return HiveLeagueCountry.uruguay;
-      case 11:
-        return HiveLeagueCountry.japan;
-      case 12:
-        return HiveLeagueCountry.korea;
-      case 13:
-        return HiveLeagueCountry.china;
-      case 14:
-        return HiveLeagueCountry.india;
-      case 15:
-        return HiveLeagueCountry.australia;
-      case 16:
-        return HiveLeagueCountry.southAfrica;
-      case 17:
-        return HiveLeagueCountry.mexico;
-      case 18:
-        return HiveLeagueCountry.usa;
-      case 19:
-        return HiveLeagueCountry.canada;
-      default:
-        return HiveLeagueCountry.england;
-    }
-  }
-
-  @override
-  void write(BinaryWriter writer, HiveLeagueCountry obj) {
-    switch (obj) {
-      case HiveLeagueCountry.england:
-        writer.writeByte(0);
-      case HiveLeagueCountry.spain:
-        writer.writeByte(1);
-      case HiveLeagueCountry.italy:
-        writer.writeByte(2);
-      case HiveLeagueCountry.germany:
-        writer.writeByte(3);
-      case HiveLeagueCountry.france:
-        writer.writeByte(4);
-      case HiveLeagueCountry.portugal:
-        writer.writeByte(5);
-      case HiveLeagueCountry.argentina:
-        writer.writeByte(6);
-      case HiveLeagueCountry.brazil:
-        writer.writeByte(7);
-      case HiveLeagueCountry.colombia:
-        writer.writeByte(8);
-      case HiveLeagueCountry.chile:
-        writer.writeByte(9);
-      case HiveLeagueCountry.uruguay:
-        writer.writeByte(10);
-      case HiveLeagueCountry.japan:
-        writer.writeByte(11);
-      case HiveLeagueCountry.korea:
-        writer.writeByte(12);
-      case HiveLeagueCountry.china:
-        writer.writeByte(13);
-      case HiveLeagueCountry.india:
-        writer.writeByte(14);
-      case HiveLeagueCountry.australia:
-        writer.writeByte(15);
-      case HiveLeagueCountry.southAfrica:
-        writer.writeByte(16);
-      case HiveLeagueCountry.mexico:
-        writer.writeByte(17);
-      case HiveLeagueCountry.usa:
-        writer.writeByte(18);
-      case HiveLeagueCountry.canada:
-        writer.writeByte(19);
-    }
-  }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is HiveLeagueCountryAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -474,6 +371,115 @@ class FixtureModelAdapter extends TypeAdapter<FixtureModel> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is FixtureModelAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class HiveCountryAdapter extends TypeAdapter<HiveCountry> {
+  @override
+  final int typeId = 8;
+
+  @override
+  HiveCountry read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 0:
+        return HiveCountry.england;
+      case 1:
+        return HiveCountry.spain;
+      case 2:
+        return HiveCountry.italy;
+      case 3:
+        return HiveCountry.germany;
+      case 4:
+        return HiveCountry.france;
+      case 5:
+        return HiveCountry.portugal;
+      case 6:
+        return HiveCountry.argentina;
+      case 7:
+        return HiveCountry.brazil;
+      case 8:
+        return HiveCountry.colombia;
+      case 9:
+        return HiveCountry.chile;
+      case 10:
+        return HiveCountry.uruguay;
+      case 11:
+        return HiveCountry.japan;
+      case 12:
+        return HiveCountry.korea;
+      case 13:
+        return HiveCountry.china;
+      case 14:
+        return HiveCountry.india;
+      case 15:
+        return HiveCountry.australia;
+      case 16:
+        return HiveCountry.southAfrica;
+      case 17:
+        return HiveCountry.mexico;
+      case 18:
+        return HiveCountry.usa;
+      case 19:
+        return HiveCountry.canada;
+      default:
+        return HiveCountry.england;
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, HiveCountry obj) {
+    switch (obj) {
+      case HiveCountry.england:
+        writer.writeByte(0);
+      case HiveCountry.spain:
+        writer.writeByte(1);
+      case HiveCountry.italy:
+        writer.writeByte(2);
+      case HiveCountry.germany:
+        writer.writeByte(3);
+      case HiveCountry.france:
+        writer.writeByte(4);
+      case HiveCountry.portugal:
+        writer.writeByte(5);
+      case HiveCountry.argentina:
+        writer.writeByte(6);
+      case HiveCountry.brazil:
+        writer.writeByte(7);
+      case HiveCountry.colombia:
+        writer.writeByte(8);
+      case HiveCountry.chile:
+        writer.writeByte(9);
+      case HiveCountry.uruguay:
+        writer.writeByte(10);
+      case HiveCountry.japan:
+        writer.writeByte(11);
+      case HiveCountry.korea:
+        writer.writeByte(12);
+      case HiveCountry.china:
+        writer.writeByte(13);
+      case HiveCountry.india:
+        writer.writeByte(14);
+      case HiveCountry.australia:
+        writer.writeByte(15);
+      case HiveCountry.southAfrica:
+        writer.writeByte(16);
+      case HiveCountry.mexico:
+        writer.writeByte(17);
+      case HiveCountry.usa:
+        writer.writeByte(18);
+      case HiveCountry.canada:
+        writer.writeByte(19);
+    }
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is HiveCountryAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

@@ -1,4 +1,6 @@
 import 'package:flutter_football_core/adapters/_adapter.dart';
+import 'package:flutter_football_core/adapters/country.adapter.dart';
+import 'package:flutter_football_core/data/model/enums/position.enum.dart';
 import 'package:flutter_football_core/data/model/player.model.dart';
 import 'package:flutter_football_core/entities/player/player.dart';
 
@@ -25,8 +27,10 @@ class PositionAdapter {
 /// Player 엔티티와 PlayerModel 모델 간의 변환을 담당하는 어댑터
 class PlayerAdapter implements EntityModelAdapter<Player, PlayerModel> {
   final PositionAdapter _positionAdapter;
-
-  PlayerAdapter() : _positionAdapter = PositionAdapter();
+  final CountryAdapter _countryAdapter;
+  PlayerAdapter()
+      : _positionAdapter = PositionAdapter(),
+        _countryAdapter = CountryAdapter();
 
   @override
   Player toEntity(PlayerModel model) {
@@ -40,6 +44,7 @@ class PlayerAdapter implements EntityModelAdapter<Player, PlayerModel> {
       gameSlotId: model.gameSlotId,
       isStarting: model.isStarting,
       backNumber: model.backNumber,
+      country: _countryAdapter.toEntity(model.country),
     );
   }
 
@@ -55,6 +60,7 @@ class PlayerAdapter implements EntityModelAdapter<Player, PlayerModel> {
       gameSlotId: entity.gameSlotId,
       isStarting: entity.isStarting,
       backNumber: entity.backNumber,
+      country: _countryAdapter.toModel(entity.country),
     );
   }
 }

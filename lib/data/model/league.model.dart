@@ -1,4 +1,4 @@
-import 'package:flutter_football_core/data/model/country.model.dart';
+import 'package:flutter_football_core/data/model/enums/country.enum.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 
 class LeagueModel extends HiveObject {
@@ -8,7 +8,7 @@ class LeagueModel extends HiveObject {
   late final int id;
   late final int gameSlotId;
   late final String name;
-  late final HiveLeagueCountry country;
+  late final HiveCountry country;
   late final int tier;
 
   LeagueModel({

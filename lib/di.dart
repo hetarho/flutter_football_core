@@ -7,6 +7,7 @@ import 'package:flutter_football_core/data/repositories/interface/data_source.in
 import 'package:flutter_football_core/data/repositories/league.repository.dart';
 import 'package:flutter_football_core/data/repositories/player.repository.dart';
 import 'package:flutter_football_core/data/repositories/season.repository.dart';
+import 'package:flutter_football_core/data/utils/random_manager.dart';
 import 'package:flutter_football_core/use-cases/club/create_club.uc.dart';
 import 'package:flutter_football_core/use-cases/club/get_all_club_by_game_slot_id.uc.dart';
 import 'package:flutter_football_core/use-cases/club/get_club.uc.dart';
@@ -22,6 +23,7 @@ import 'package:flutter_football_core/use-cases/game_slot/get_game_slot.uc.dart'
 import 'package:flutter_football_core/use-cases/game_slot/update_game_slot.uc.dart';
 import 'package:flutter_football_core/use-cases/interfaces/league.repository.interface.dart';
 import 'package:flutter_football_core/use-cases/interfaces/player.repository.interface.dart';
+import 'package:flutter_football_core/use-cases/interfaces/random_manager.util.interface.dart';
 import 'package:flutter_football_core/use-cases/interfaces/season.repository.interface.dart';
 import 'package:flutter_football_core/use-cases/league/create_league.uc.dart';
 import 'package:flutter_football_core/use-cases/league/get_all_league_by_game_slot_id.dart';
@@ -41,6 +43,9 @@ void setupLocator() {
   locator.registerLazySingleton<PlayerRepository>(() => PlayerRepositoryImpl(locator<DataSource>(instanceName: LocalDataSource.instanceName)));
   locator.registerLazySingleton<LeagueRepository>(() => LeagueRepositoryImpl(locator<DataSource>(instanceName: LocalDataSource.instanceName)));
   locator.registerLazySingleton<SeasonRepository>(() => SeasonRepositoryImpl(locator<DataSource>(instanceName: LocalDataSource.instanceName)));
+
+  locator.registerLazySingleton<RandomManager>(() => RandomManagerImpl());
+
   locator.registerLazySingleton<GetAllGameSlotUsecase>(() => GetAllGameSlotUsecase());
   locator.registerLazySingleton<CreateGameSlotUsecase>(() => CreateGameSlotUsecase());
   locator.registerLazySingleton<DeleteGameSlotUsecase>(() => DeleteGameSlotUsecase());

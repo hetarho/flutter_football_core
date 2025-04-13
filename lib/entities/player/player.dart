@@ -1,3 +1,5 @@
+import 'package:flutter_football_core/entities/country.enum.dart';
+
 class Player {
   final int id;
   final String name;
@@ -9,6 +11,7 @@ class Player {
   int? backNumber;
   int stat;
   bool? isStarting;
+  Country country;
 
   Player({
     required this.id,
@@ -20,6 +23,7 @@ class Player {
     required this.clubId,
     required this.gameSlotId,
     this.isStarting,
+    required this.country,
   });
 
   @override

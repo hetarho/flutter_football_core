@@ -1,3 +1,5 @@
+import 'dart:math';
+
 enum Country {
   england,
   spain,
@@ -19,4 +21,13 @@ enum Country {
   mexico,
   usa,
   canada,
+}
+
+extension RandomCountry on Country {
+  static final _random = Random();
+
+  static Country random() {
+    final values = Country.values;
+    return values[_random.nextInt(values.length)];
+  }
 }

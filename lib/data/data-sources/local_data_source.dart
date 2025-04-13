@@ -144,15 +144,17 @@ class LocalDataSource implements DataSource {
   }
 
   @override
-  Future<int> createPlayer(
-      {required String name,
-      required Position position,
-      required int age,
-      required int stat,
-      int? clubId,
-      required int gameSlotId,
-      int? backNumber,
-      bool? isStarting}) async {
+  Future<int> createPlayer({
+    required String name,
+    required Position position,
+    required int age,
+    required int stat,
+    int? clubId,
+    required int gameSlotId,
+    int? backNumber,
+    bool? isStarting,
+    required Country country,
+  }) async {
     final id = await _localStorage.getNextId(PlayerModel.boxName);
     final player = Player(
       id: id,
@@ -164,6 +166,7 @@ class LocalDataSource implements DataSource {
       gameSlotId: gameSlotId,
       backNumber: backNumber,
       isStarting: isStarting,
+      country: country,
     );
     await _localStorage.create<PlayerModel>(key: PlayerModel.boxName, id: id, value: _playerAdapter.toModel(player));
     return id;

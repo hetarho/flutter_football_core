@@ -10,10 +10,10 @@ extension HiveRegistrar on HiveInterface {
     registerAdapter(ClubModelAdapter());
     registerAdapter(FixtureModelAdapter());
     registerAdapter(GameSlotModelAdapter());
-    registerAdapter(HiveLeagueCountryAdapter());
-    registerAdapter(HivePositionAdapter());
     registerAdapter(LeagueModelAdapter());
     registerAdapter(PlayerModelAdapter());
     registerAdapter(SeasonModelAdapter());
+    registerAdapter(HiveCountryAdapter());
+    registerAdapter(HivePositionAdapter());
   }
 }

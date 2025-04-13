@@ -34,7 +34,17 @@ abstract class DataSource {
   Future<List<Club>> getAllClubsByGameSlotId(int gameSlotId);
   Future<List<Club>> getAllClubsByLeagueId(int leagueId);
 
-  Future<int> createPlayer({required String name, required Position position, required int age, required int stat, int? clubId, required int gameSlotId, int? backNumber, bool? isStarting});
+  Future<int> createPlayer({
+    required String name,
+    required Position position,
+    required int age,
+    required int stat,
+    int? clubId,
+    required int gameSlotId,
+    int? backNumber,
+    bool? isStarting,
+    required Country country,
+  });
   Future<List<Player>> getAllPlayersByClubId(int clubId);
   Future<void> deletePlayerByGameSlotId(int gameSlotId);
   Future<void> updatePlayer({int? age, int? backNumber, int? clubId, required int id, bool? isStarting, Position? position, int? stat});
@@ -49,7 +59,13 @@ abstract class DataSource {
   Future<int> createSeason({required int leagueId, required int gameSlotId, required DateTime startDate, required DateTime endDate});
   Future<List<Season>> getAllSeasonsByLeagueId(int leagueId);
 
-  Future<int> createFixture({required int leagueId, required int gameSlotId, required int seasonId, required int homeClubId, required int awayClubId, required DateTime date});
+  Future<int> createFixture(
+      {required int leagueId,
+      required int gameSlotId,
+      required int seasonId,
+      required int homeClubId,
+      required int awayClubId,
+      required DateTime date});
   Future<List<Fixture>> getFixturesByLeagueId(int leagueId);
   Future<void> updateFixture({required int id, required int homeScore, required int awayScore});
 }

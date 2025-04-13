@@ -1,16 +1,6 @@
+import 'package:flutter_football_core/data/model/enums/country.enum.dart';
+import 'package:flutter_football_core/data/model/enums/position.enum.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
-
-@HiveType(typeId: 1)
-enum HivePosition {
-  @HiveField(0)
-  forward,
-  @HiveField(1)
-  midfield,
-  @HiveField(2)
-  defense,
-  @HiveField(3)
-  goalie,
-}
 
 class PlayerModel extends HiveObject {
   static const String boxName = 'player';
@@ -25,7 +15,7 @@ class PlayerModel extends HiveObject {
   int? backNumber;
   int stat;
   bool? isStarting;
-
+  HiveCountry country;
   int? clubId;
 
   PlayerModel({
@@ -38,6 +28,7 @@ class PlayerModel extends HiveObject {
     required this.gameSlotId,
     this.backNumber,
     this.isStarting,
+    required this.country,
   });
 
   PlayerModel copyWith({
@@ -50,6 +41,7 @@ class PlayerModel extends HiveObject {
     bool? isStarting,
     int? clubId,
     int? gameSlotId,
+    HiveCountry? country,
   }) {
     return PlayerModel(
       id: id ?? this.id,
@@ -59,8 +51,9 @@ class PlayerModel extends HiveObject {
       backNumber: backNumber ?? this.backNumber,
       stat: stat ?? this.stat,
       clubId: clubId ?? this.clubId,
-      gameSlotId: gameSlotId ?? this.gameSlotId,  
+      gameSlotId: gameSlotId ?? this.gameSlotId,
       isStarting: isStarting ?? this.isStarting,
+      country: country ?? this.country,
     );
   }
 }
