@@ -35,7 +35,7 @@ class _SelectClubScreenState extends ConsumerState<SelectClubScreen> {
       appBar: AppBar(
         title: const Text('Select Club'),
         leading: IconButton(
-          onPressed: () => context.pushReplacement(HomeScreen.routeName),
+          onPressed: () => context.go(HomeScreen.routeName),
           icon: const Icon(Icons.arrow_back),
         ),
       ),

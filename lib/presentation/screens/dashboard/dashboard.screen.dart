@@ -22,7 +22,7 @@ class DashboardScreen extends ConsumerWidget {
         title: const Text('Dashboard'),
         actions: [
           IconButton(
-            onPressed: () => context.pushReplacement(HomeScreen.routeName),
+            onPressed: () => context.go(HomeScreen.routeName),
             icon: const Icon(Icons.home),
           ),
         ],

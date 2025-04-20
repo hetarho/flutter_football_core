@@ -80,7 +80,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       if (gameSlot.selectedClubId == null) {
         context.push(SelectClubScreen.routeName);
       } else {
-        context.pushReplacement(DashboardScreen.routeName);
+        context.go(DashboardScreen.routeName);
       }
     }
   }

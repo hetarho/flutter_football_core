@@ -55,9 +55,7 @@ class LocalDataSource implements DataSource {
   @override
   Future<List<GameSlot>> getAllGameSlots() async {
     final List<GameSlotModel> models = await _localStorage.readAll(key: GameSlotModel.boxName);
-    for (final model in models) {
-      print(model);
-    }
+
     // 모델 리스트를 엔티티 리스트로 변환
     return models.map((model) => _gameSlotAdapter.toEntity(model)).toList();
   }

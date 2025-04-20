@@ -66,7 +66,7 @@ class _ClubCard extends ConsumerWidget {
                 final gameSlot = await getGameSlotUsecase.execute(GetGameSlotParams(id: ref.read(selectedGameSlotProvider).id));
                 ref.read(selectedGameSlotProvider.notifier).state = gameSlot;
                 if (context.mounted) {
-                  context.pushReplacement(DashboardScreen.routeName);
+                  context.go(DashboardScreen.routeName);
                 }
               },
               disabled: selectedClubId != club.id,

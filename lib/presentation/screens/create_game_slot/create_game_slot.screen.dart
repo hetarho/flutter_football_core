@@ -46,7 +46,7 @@ class CreateGameSlotScreen extends ConsumerWidget {
               onPressed: () async {
                 await createGameSlot(ref);
 
-                if (context.mounted) context.pushReplacement(SelectClubScreen.routeName);
+                if (context.mounted) context.go(SelectClubScreen.routeName);
               },
               child: const Text('Create'),
             ),
